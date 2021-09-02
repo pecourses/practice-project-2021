@@ -22,6 +22,8 @@
    - [Windows](https://docs.docker.com/docker-for-windows/install/)
    - [Mac](https://docs.docker.com/docker-for-mac/install/)
 
+   и [Docker Compose](https://docs.docker.com/compose/install/) (выбрать нужную ОС).
+
 1. (Каждый раз). <br>
    Вам понадобится еще один новый терминал. <br>
    Для запуска серверной части приложения (+ серверов баз данных) в корневой папке проекта запустить скрипт:
