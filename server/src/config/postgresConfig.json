@@ -5,7 +5,8 @@
     "database": "todo-dev",
     "host": "db-dev",
     "dialect": "postgres",
-    "operatorsAliases": "Op"
+    "operatorsAliases": "Op",
+    "seederStorage": "sequelize"
   },
   "test": {
     "username": "postgres",
@@ -13,7 +14,8 @@
     "database": "todo-test",
     "host": "localhost",
     "dialect": "postgres",
-    "operatorsAliases": "Op"
+    "operatorsAliases": "Op",
+    "seederStorage": "sequelize"
   },
   "production": {
     "username": "postgres",
@@ -21,6 +23,7 @@
     "database": "todo-prod",
     "host": "localhost",
     "dialect": "postgres",
-    "operatorsAliases": "Op"
+    "operatorsAliases": "Op",
+    "seederStorage": "sequelize"
   }
 }
