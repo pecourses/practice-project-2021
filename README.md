@@ -18,7 +18,7 @@
    Вам понадобится новый терминал. <br>
    Установить приложение для контейнеризации [Docker](https://docs.docker.com/):
 
-   - [Ubultu](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository) (выполнить 3 шага)
+   - [Ubuntu](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository) (выполнить 3 шага)
    - [Windows](https://docs.docker.com/docker-for-windows/install/)
    - [Mac](https://docs.docker.com/docker-for-mac/install/)
 
