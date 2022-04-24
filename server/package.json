@@ -40,7 +40,7 @@
   },
   "nodemonConfig": {
     "ignore": [
-      "src/jsonDB/**/*.json"
+      "src/jsonDB/data/*.json"
     ]
   }
 }
