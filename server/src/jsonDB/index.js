@@ -23,7 +23,7 @@ readdirSync(path.resolve(__dirname, './models'))
   })
   .forEach((file) => {
     const model = require(path.join(__dirname, './models', file))(dbClient);
-    db[ model.name ] = model;
+    db[ model.tableName ] = model;
   });
 db.client = dbClient;
 

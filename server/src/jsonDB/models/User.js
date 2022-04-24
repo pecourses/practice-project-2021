@@ -19,4 +19,4 @@ const userScheme = yup.object().shape({
   rating: yup.number().default(0).required(), // float
 });
 
-module.exports = (client) => new Entity(client, 'Users', userScheme);
+module.exports = (client) => new Entity(client, 'User', 'Users', userScheme);
