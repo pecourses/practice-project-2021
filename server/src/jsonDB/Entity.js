@@ -1,5 +1,12 @@
 module.exports = class Entity {
-  constructor(dbClient, modelName, tableName, yupScheme, timestamps) {
+  constructor({
+    client: dbClient,
+    modelName,
+    tableName,
+    primaryKey,
+    yupScheme,
+    timestamps,
+  }) {
     this.dbClient = dbClient;
     this.path = `/${tableName}`;
     try {
@@ -10,6 +17,7 @@ module.exports = class Entity {
 
     this.name = modelName;
     this.tableName = tableName;
+    this.primaryKey = primaryKey;
     this.yupScheme = yupScheme;
     this.useTimestamps = Boolean(timestamps);
   }
@@ -20,8 +28,10 @@ module.exports = class Entity {
   create(data) {
     this.yupScheme.validateSync(data);
     const existingData = this.findAll();
-    const newRow = Object.assign({ id: existingData.length }, data,
-      (this.useTimestamps ? { createdAt: Date.now(), updatedAt: Date.now() } : {}),
+    const newRow = Object.assign(
+      { ...this.yupScheme.default(), [this.primaryKey]: existingData.length },
+      data,
+      this.useTimestamps ? { createdAt: Date.now(), updatedAt: Date.now() } : {},
     );
     const newArray = [...existingData, newRow];
     this.dbClient.push(this.path, newArray);
@@ -30,11 +40,12 @@ module.exports = class Entity {
   }
 
   /**
-   * @param {number | string} id
+   * @param {number | string} pk
    */
-  findById(id) {
+  findById(pk) {
     const existingData = this.findAll();
-    const foundData = existingData.find((d) => d.id === id) || null;
+    const foundData =
+      existingData.find((d) => d[this.primaryKey] === pk) || null;
     return foundData;
   }
 
@@ -60,17 +71,17 @@ module.exports = class Entity {
             verdicts.push(true);
           }
         }
-        return verdicts.every(v => v === true);
+        return verdicts.every((v) => v === true);
       });
 
       // limit
       const limited = [];
       let limitCount = 0;
-      for (const idx of foundRows) {
+      for (const index of foundRows) {
         if (limitCount >= predicate.limit) {
           break;
         }
-        limited.push(foundRows[idx]);
+        limited.push(foundRows[index]);
         limitCount++;
       }
       return limited;
@@ -99,12 +110,12 @@ module.exports = class Entity {
           verdicts.push(true);
         }
       }
-      if (verdicts.every(v => v === true)) {
+      if (verdicts.every((v) => v === true)) {
         indexes.push(index);
       }
     });
 
-    if(!indexes.length) {
+    if (!indexes.length) {
       return null;
     }
 
@@ -122,8 +133,8 @@ module.exports = class Entity {
     const existingData = this.findAll();
 
     const newArray = [...existingData];
-    if (data.id) {
-      delete data.id;
+    if (data[this.primaryKey]) {
+      delete data[this.primaryKey];
     }
     const rows = [];
 
@@ -138,22 +149,25 @@ module.exports = class Entity {
             verdicts.push(true);
           }
         }
-        if (verdicts.every(v => v === true)) {
+        if (verdicts.every((v) => v === true)) {
           indexes.push(index);
         }
       });
 
       // limit
       let limitCount = 0;
-      for (const idx of indexes) {
+      for (const index of indexes) {
         if (limitCount >= predicate.limit) {
           break;
         }
-        const newData = Object.assign({}, newArray[idx], data,
-          (this.useTimestamps ? { updatedAt: Date.now() } : {}),
+        const newData = Object.assign(
+          { ...this.yupScheme.default() },
+          newArray[index],
+          data,
+          this.useTimestamps ? { updatedAt: Date.now() } : {},
         );
         this.yupScheme.validateSync(newData);
-        newArray[idx] = newData;
+        newArray[index] = newData;
         rows.push(newData);
         limitCount++;
       }
@@ -164,8 +178,11 @@ module.exports = class Entity {
         if (limitCount >= predicate.limit) {
           break;
         }
-        const newData = Object.assign({}, d, data,
-          (this.useTimestamps ? { updatedAt: Date.now() } : {}),
+        const newData = Object.assign(
+          { ...this.yupScheme.default() },
+          d,
+          data,
+          this.useTimestamps ? { updatedAt: Date.now() } : {},
         );
         this.yupScheme.validateSync(newData);
         newRows.push(newData);
@@ -183,18 +200,19 @@ module.exports = class Entity {
   }
 
   /**
-   * @param {number | string} id
+   * @param {number | string} pk
    * @param {object} data
    */
-  updateById(id, data) {
+  updateById(pk, data) {
     this.dbClient.reload();
     const existingData = this.dbClient.getData(this.path);
-    const foundIndex = existingData.findIndex(d => d.id === id) || null;
+    const foundIndex =
+      existingData.findIndex((d) => d[this.primaryKey] === pk) || null;
     const newArray = [...existingData];
-    if (data.id) {
-      delete data.id;
+    if (data[this.primaryKey]) {
+      delete data[this.primaryKey];
     }
-    const newData = Object.assign({}, newArray[foundIndex], data);
+    const newData = Object.assign({ ...this.yupScheme.default() }, newArray[foundIndex], data);
     this.yupScheme.validateSync(newData);
     newArray[foundIndex] = newData;
     this.dbClient.push(this.path, newArray);
