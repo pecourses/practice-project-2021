@@ -1,12 +1,51 @@
+const { JsonDB } = require('node-json-db');
+const uuid = require('uuid');
+const yup = require('yup');
+
+const customValidations = [
+  { name: 'uniqueValidation', method: 'unique', defaultParam: { message: 'Unique constraint error' } },
+  { name: 'primaryKeyValidation', method: 'primaryKey', defaultParam: { message: 'Value violates primary key constraint' } },
+  { name: 'autogenerate', method: 'autogenerate', defaultParam: { message: null } },
+  { name: 'foreignKeyValidation', method: 'foreignKey', defaultParam: { message: 'Value violates foreign key constraint', references: { table: null, key: null } } },
+];
+
+customValidations.forEach((v) => {
+  function handler (param = v.defaultParam) {
+    this[v.name] = param;
+    return this;
+  };
+  yup.addMethod(yup.number, v.method, handler);
+  yup.addMethod(yup.string, v.method, handler);
+});
+
+class HttpError extends Error {
+  constructor(code, message) {
+    super();
+    this.code = code;
+    this.message = message;
+  }
+}
+
+const constructorProps = yup.object().shape({
+  client: yup.object().test('client_instance', 'client prop should be an instance of JsonDB', (value) => value instanceof JsonDB).required(),
+  yupScheme: yup.object().test('yup_instance', 'yupScheme should be an instance of yup ObjectSchema shape', (value) => value instanceof yup.ObjectSchema).required(),
+  modelName: yup.string().required(),
+  tableName: yup.string().required(),
+  timestamps: yup.boolean().optional(),
+});
+
 module.exports = class Entity {
-  constructor({
-    client: dbClient,
-    modelName,
-    tableName,
-    primaryKey,
-    yupScheme,
-    timestamps,
-  }) {
+  constructor(props, db) {
+    constructorProps.validateSync(props);
+
+    const {
+      client: dbClient,
+      modelName,
+      tableName,
+      yupScheme,
+      timestamps,
+    } = props;
+
     this.dbClient = dbClient;
     this.path = `/${tableName}`;
     try {
@@ -17,35 +56,192 @@ module.exports = class Entity {
 
     this.name = modelName;
     this.tableName = tableName;
-    this.primaryKey = primaryKey;
     this.yupScheme = yupScheme;
     this.useTimestamps = Boolean(timestamps);
+
+    customValidations.forEach((v) => {
+      this[`${v.name}Fields`] = Object.entries(this.yupScheme.fields)
+        .filter(([_field, schema]) => schema.hasOwnProperty(v.name))
+        .reduce((acc, [field, schema]) => Object.assign({}, acc, { [field]: schema[v.name] }), {});
+    });
+  }
+
+  async nextId() {
+    return this.dbClient.count(this.path) + 1;
+  }
+
+  async getRowsByPredicate(rows, predicate = {}) {
+    const foundRows = predicate.where
+      ? rows.filter((data) => {
+          const verdicts = [];
+          for (const key in predicate.where) {
+            const comparedValue = predicate.where[key];
+            if (data[key] === comparedValue) {
+              verdicts.push(true);
+            }
+          }
+          return verdicts.length && verdicts.every((v) => v === true);
+        })
+      : rows;
+
+    return foundRows.slice(0, predicate.limit || foundRows.length);
+  }
+
+  async customYupValidation(data, validatorName, code = 400) {
+    const test = async (data, validator) => {
+      for (const field in this[`${validator}Fields`]) {
+        if (data[field]) {
+          const fieldValidation = this[`${validator}Fields`][field];
+
+          if (validator === 'foreignKeyValidation') {
+            const fk = fieldValidation;
+            if (fk.references.table && fk.references.key) {
+              const foreignTable = db[fk.references.table];
+              if (!foreignTable || !foreignTable?.yupScheme?.fields?.[fk.references.key]) {
+                throw new Error(`Cannot satisfy foreignKey constraint in model ${this.name} field '${field}' to table ${fk.references.table}(column ${fk.references.key})`);
+              }
+    
+              const found = foreignTable.findOne({ where: { [field]: newData[field] } });
+              if (!found) {
+                throw new Error(`${type.charAt(0).toUpperCase() + type.slice(1)} in table '${this.name}' violates foreign key constraint "${this.name}_${field}_fk" on table ${foreignTable}`);
+              }
+            } else {
+              throw new Error(`Foreign key of model ${this.name} field ${field} should have references option`);
+            }
+          } else {
+            const found = await this.findOne({ where: { [field]: data[field] } });
+            if (found) {
+              throw new HttpError(code, typeof fieldValidation === 'string' ? fieldValidation : fieldValidation.message);
+            }
+          }
+        }
+      }
+    }
+
+    if (this.yupScheme) {
+      if (typeof validatorName === 'string') {
+        await test(data, validatorName);
+      } else if (Array.isArray(validatorName)) {
+        for (const validator of validatorName) {
+          await test(data, validator);
+        }
+      }
+    }
+  }
+
+  async yupValidateData(data) {
+    try {
+      if (this.yupScheme) {
+        await this.yupScheme.validate(data);
+      }
+    } catch (error) {
+      throw new HttpError(400, error.message);
+    }
+  }
+
+  async saveRows(table) {
+    this.dbClient.push(this.path, table);
+    this.dbClient.save();
+  }
+
+  async mergeRows(oldData, newData, options = { type: 'none' }) {
+    const defaults = await this.yupScheme?.default();
+    const timestamps =
+      this.useTimestamps
+      ? {
+          createdAt:
+            options.type === 'create'
+            ? Date.now()
+            : oldData.createdAt,
+          updatedAt: Date.now(),
+        }
+      : {};
+
+    return Object.assign({}, defaults, oldData, timestamps, newData);
+  }
+
+  async generatePrimaryKeys() {
+    const primaryKeys = {};
+    for (const field in this.autogenerate) {
+      const generate = this.autogenerate[field];
+      let value;
+      if (typeof generate === 'function') {
+        value = await generate();
+      } else if (generate === 'increment') {
+        value = await nextId();
+      } else if (generate === 'uuid') {
+        value = uuid.v4();
+      }
+      value && Object.assign(primaryKeys, { [field]: value });
+    }
+    return primaryKeys;
+  }
+
+  async checkForeignReferences(newData, type) {
+    if (type === 'create' || type === 'update') {
+      Object.entries(this.foreignKeyValidationFields)
+      .forEach(([field, fk]) => {
+        if (fk.references.table && fk.references.key) {
+          const foreignTable = db[fk.references.table];
+          if (!foreignTable || !foreignTable?.yupScheme?.fields?.[fk.references.key]) {
+            throw new Error(`Cannot satisfy foreignKey constraint in model ${this.name} field '${field}' to table ${fk.references.table}(column ${fk.references.key})`);
+          }
+
+          const found = foreignTable.findOne({ where: { [field]: newData[field] } });
+          if (!found) {
+            throw new Error(`${type.charAt(0).toUpperCase() + type.slice(1)} in table '${this.name}' violates foreign key constraint "${this.name}_${field}_fk" on table ${foreignTable}`);
+          }
+        } else {
+          throw new Error(`Foreign key of model ${this.name} field ${field} should have references option`);
+        }
+      });
+    }
   }
 
   /**
    * @param {object} data
+   * @returns {Promise<object} created row of entity model
    */
-  create(data) {
-    this.yupScheme.validateSync(data);
-    const existingData = this.findAll();
-    const newRow = Object.assign(
-      { ...this.yupScheme.default(), [this.primaryKey]: existingData.length },
+  async create(data) {
+    await this.yupValidateData(data);
+    const existingData = await this.findAll();
+
+    await this.customYupValidation(
       data,
-      this.useTimestamps ? { createdAt: Date.now(), updatedAt: Date.now() } : {},
+      ['uniqueValidation', 'primaryKeyValidation'],
+      409
     );
-    const newArray = [...existingData, newRow];
-    this.dbClient.push(this.path, newArray);
-    this.dbClient.save();
+    await this.customYupValidation(data, 'foreignKeyValidation', 404);
+
+    const pks = await this.generatePrimaryKeys();
+    const newRow = await this.mergeRows(pks, data, { type: 'create' });
+
+    await this.saveRows(Object.assign([], existingData, newRow));
     return newRow;
   }
 
   /**
-   * @param {number | string} pk
+   * @param {object[]} data
+   * @returns {Promise<object[]>} created rows of entity model
    */
-  findById(pk) {
-    const existingData = this.findAll();
+  async bulkCreate(data) {
+    if (!Array.isArray(data)) {
+      throw new Error('Bulk create param should be an Array');
+    }
+
+    const createdBulkData = data.map(async (d) => await this.create(d));
+
+    return createdBulkData;
+  }
+
+  /**
+   * @param {number | string} pk
+   * @returns {Promise<object>} row of entity model
+   */
+  async findByPk(pk) {
+    const existingData = await this.findAll();
     const foundData =
-      existingData.find((d) => d[this.primaryKey] === pk) || null;
+      existingData.find(await this.byPkPredicate.bind(this)) || null;
     return foundData;
   }
 
@@ -53,39 +249,13 @@ module.exports = class Entity {
    * @param {object} predicate
    * @param {object | undefined} predicate.where
    * @param {number | undefined} predicate.limit
-   * @returns {array} rows of entity model
+   * @returns {Promise<object[]>} rows of entity model
    */
-  findAll(predicate) {
+  async findAll(predicate) {
     this.dbClient.reload();
     const existingData = this.dbClient.getData(this.path);
 
-    const newArray = [...existingData];
-
-    if (predicate) {
-      // where
-      const foundRows = existingData.filter((data) => {
-        const verdicts = [];
-        for (const key in predicate.where) {
-          const comparedValue = predicate[key];
-          if (data[key] === comparedValue) {
-            verdicts.push(true);
-          }
-        }
-        return verdicts.every((v) => v === true);
-      });
-
-      // limit
-      const limited = [];
-      let limitCount = 0;
-      for (const index of foundRows) {
-        if (limitCount >= predicate.limit) {
-          break;
-        }
-        limited.push(foundRows[index]);
-        limitCount++;
-      }
-      return limited;
-    }
+    const newArray = await this.getRowsByPredicate(existingData, predicate);
 
     return newArray;
   }
@@ -93,33 +263,21 @@ module.exports = class Entity {
   /**
    * @param {object} predicate
    * @param {object | undefined} predicate.where
-   * @returns {array} rows of entity model
+   * @returns {Promise<object>} row of entity model
    */
-  findOne(predicate) {
+  async findOne(predicate) {
     if (!predicate.where) {
       throw new Error('Where predicate not found');
     }
-    const existingData = this.findAll();
 
-    const indexes = [];
-    existingData.forEach((data, index) => {
-      const verdicts = [];
-      for (const key in predicate.where) {
-        const comparedValue = predicate[key];
-        if (data[key] === comparedValue) {
-          verdicts.push(true);
-        }
-      }
-      if (verdicts.every((v) => v === true)) {
-        indexes.push(index);
-      }
-    });
+    const existingData = await this.findAll();
+    const found = await this.getRowsByPredicate(existingData, Object.assign({}, predicate, { limit: 1 }));
 
-    if (!indexes.length) {
+    if (!found.length) {
       return null;
     }
 
-    return existingData[indexes[0]];
+    return found[0];
   }
 
   /**
@@ -127,96 +285,72 @@ module.exports = class Entity {
    * @param {object} predicate
    * @param {object | undefined} predicate.where
    * @param {number | undefined} predicate.limit
-   * @returns {[number, object[]]]}
+   * @returns {Promise<[number, object[]]]>} updated count and rows of entity model
    */
-  update(data, predicate) {
-    const existingData = this.findAll();
+  async update(data, predicate) {
+    const existingData = await this.findAll();
 
-    const newArray = [...existingData];
-    if (data[this.primaryKey]) {
-      delete data[this.primaryKey];
-    }
-    const rows = [];
+    await this.customYupValidation(
+      data,
+      ['uniqueValidation', 'primaryKeyValidation'],
+      409
+    );
+    await this.customYupValidation(data, 'foreignKeyValidation', 404);
 
-    if (predicate) {
-      // where
-      const indexes = [];
-      existingData.forEach((data, index) => {
-        const verdicts = [];
-        for (const key in predicate.where) {
-          const comparedValue = predicate[key];
-          if (data[key] === comparedValue) {
-            verdicts.push(true);
-          }
-        }
-        if (verdicts.every((v) => v === true)) {
-          indexes.push(index);
-        }
-      });
+    const foundRows = await this.getRowsByPredicate(existingData, predicate);
+    const updatedRows = [];
+    for (const row of foundRows) {
+      // check data
+      const newData = await this.mergeRows(row, data, { type: 'update' });
+      await this.yupValidateData(newData);
 
-      // limit
-      let limitCount = 0;
-      for (const index of indexes) {
-        if (limitCount >= predicate.limit) {
-          break;
-        }
-        const newData = Object.assign(
-          { ...this.yupScheme.default() },
-          newArray[index],
-          data,
-          this.useTimestamps ? { updatedAt: Date.now() } : {},
-        );
-        this.yupScheme.validateSync(newData);
-        newArray[index] = newData;
-        rows.push(newData);
-        limitCount++;
-      }
-    } else {
-      const newRows = [];
-      let limitCount = 0;
-      for (const d of existingData) {
-        if (limitCount >= predicate.limit) {
-          break;
-        }
-        const newData = Object.assign(
-          { ...this.yupScheme.default() },
-          d,
-          data,
-          this.useTimestamps ? { updatedAt: Date.now() } : {},
-        );
-        this.yupScheme.validateSync(newData);
-        newRows.push(newData);
-        rows.push(newData);
-        limitCount++;
-      }
-      newArray.splice(0, newArray.length, ...newRows);
+      // write data
+      Object.assign(row, newData);
+      updatedRows.push(newData);
     }
 
-    const count = rows.length;
+    const count = updatedRows.length;
 
-    this.dbClient.push(this.path, newArray);
-    this.dbClient.save();
-    return [count, rows];
+    await this.saveRows(existingData);
+    return [count, updatedRows];
+  }
+
+  async byPkPredicate(row) {
+    for (const primaryKey of this.primaryKeyFields) {
+      if (row[primaryKey] === pk) {
+        return true;
+      };
+    }
+    return false;
   }
 
   /**
    * @param {number | string} pk
    * @param {object} data
+   * @returns {Promise<object>} updated row of entity model
    */
-  updateById(pk, data) {
-    this.dbClient.reload();
-    const existingData = this.dbClient.getData(this.path);
-    const foundIndex =
-      existingData.findIndex((d) => d[this.primaryKey] === pk) || null;
-    const newArray = [...existingData];
-    if (data[this.primaryKey]) {
-      delete data[this.primaryKey];
+  async updateByPk(pk, data) {
+    const existingData = await this.findAll();
+
+    await this.customYupValidation(
+      data,
+      ['uniqueValidation', 'primaryKeyValidation'],
+      409
+    );
+    await this.customYupValidation(data, 'foreignKeyValidation', 404);
+
+    const foundIndex = existingData.findIndex(await this.byPkPredicate.bind(this));
+    if(foundIndex === -1) {
+      return null;
     }
-    const newData = Object.assign({ ...this.yupScheme.default() }, newArray[foundIndex], data);
-    this.yupScheme.validateSync(newData);
-    newArray[foundIndex] = newData;
-    this.dbClient.push(this.path, newArray);
-    this.dbClient.save();
-    return newArray[foundIndex];
+
+    const foundRow = existingData[foundIndex];
+    const newData = await this.mergeRows(foundRow, data, { type: 'update' });
+    await this.yupValidateData(newData);
+
+    Object.assign(foundRow, newData);
+
+    await this.saveRows(existingData);
+    return newData;
   }
 };

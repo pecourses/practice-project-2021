@@ -16,15 +16,16 @@ try {
 }
 
 const db = {};
+db.client = dbClient;
+
 readdirSync(path.resolve(__dirname, './models'))
   .filter((file) => {
     return (file.indexOf('.') !== 0) &&
       (file.slice(-3) === '.js');
   })
   .forEach((file) => {
-    const model = require(path.join(__dirname, './models', file))(dbClient);
+    const model = require(path.join(__dirname, './models', file))(db);
     db[ model.tableName ] = model;
   });
-db.client = dbClient;
 
 module.exports = db;

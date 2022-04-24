@@ -9,7 +9,7 @@ module.exports.updateUser = async (data, userId, transaction) => {
   //   { where: { id: userId }, returning: true, transaction });
 
   const [updatedCount, [updatedUser]] = await dbClient.Users.update(data,
-    { where: { id: userId } });
+    { where: { id: userId }, limit: 1 });
 
   if (updatedCount !== 1) {
     throw new ServerError('cannot update user');
@@ -34,8 +34,6 @@ module.exports.findUser = async (predicate = {}, transaction) => {
 
 module.exports.userCreation = async (data) => {
   // const newUser = await bd.Users.create(data);
-
-  data.avatar = 'anon.png';
   const newUser = await dbClient.Users.create(data);
 
   if (!newUser) {
