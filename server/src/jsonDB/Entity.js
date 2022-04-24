@@ -1,5 +1,5 @@
 module.exports = class Entity {
-  constructor(dbClient, modelName, yupScheme) {
+  constructor(dbClient, modelName, yupScheme, timestamps) {
     this.path = `/${modelName}`;
 
     try {
@@ -11,6 +11,7 @@ module.exports = class Entity {
     this.dbClient = dbClient;
     this.name = modelName;
     this.yupScheme = yupScheme;
+    this.useTimestamps = Boolean(timestamps);
   }
 
   /**
@@ -20,7 +21,9 @@ module.exports = class Entity {
     this.yupScheme.validateSync(data);
     this.dbClient.reload();
     const existingData = this.dbClient.getData(this.path);
-    const newRow = Object.assign({}, data, { id: existingData.length });
+    const newRow = Object.assign({ id: existingData.length }, data,
+      (this.useTimestamps ? { createdAt: Date.now(), updatedAt: Date.now() } : {}),
+    );
     const newArray = [...existingData, newRow];
     this.dbClient.push(this.path, newArray);
     this.dbClient.save();
@@ -44,6 +47,37 @@ module.exports = class Entity {
     this.dbClient.reload();
     const existingData = this.dbClient.getData(this.path);
     return existingData;
+  }
+
+  /**
+   * @returns {array} rows of entity model
+   */
+  findOne(predicate) {
+    if (!predicate.where) {
+      throw new Error('Where predicate not found');
+    }
+    this.dbClient.reload();
+    const existingData = this.dbClient.getData(this.path);
+
+    const indexes = [];
+    existingData.forEach((data, index) => {
+      const verdicts = [];
+      for (const key in predicate.where) {
+        const comparedValue = predicate[key];
+        if (data[key] === comparedValue) {
+          verdicts.push(true);
+        }
+      }
+      if (verdicts.every(v => v === true)) {
+        indexes.push(index);
+      }
+    });
+
+    if(!indexes.length) {
+      return null;
+    }
+
+    return existingData[indexes[0]];
   }
 
   /**
@@ -83,7 +117,11 @@ module.exports = class Entity {
         if (limitCount >= predicate.limit) {
           break;
         }
-        const newData = Object.assign({}, newArray[idx], data);
+        const newData = Object.assign({}, newArray[idx], data,
+          {
+            ...(this.useTimestamps ? { updatedAt: Date.now() } : {}),
+          },
+        );
         this.yupScheme.validateSync(newData);
         newArray[idx] = newData;
         rows.push(newData);
@@ -96,7 +134,11 @@ module.exports = class Entity {
         if (limitCount >= predicate.limit) {
           break;
         }
-        const newData = Object.assign({}, d, data);
+        const newData = Object.assign({}, d, data,
+          {
+            ...(this.useTimestamps ? { updatedAt: Date.now() } : {}),
+          },
+        );
         this.yupScheme.validateSync(newData);
         newRows.push(newData);
         rows.push(newData);
