@@ -2,7 +2,7 @@ const yup = require('yup');
 const Entity = require('../Entity');
 
 const offerScheme = yup.object().shape({
-  id: yup.number().integer().required().primaryKey().autogenerate('increment'), // pk
+  id: yup.number().integer().optional().primaryKey().autogenerate('increment'), // pk
   userId: yup.number().integer().min(0).required().foreignKey({ references: { table: 'Users', key: 'id' } }), // fk
   contestId: yup.number().integer().min(0).required().foreignKey({ references: { table: 'Contests', key: 'id' } }), // fk
   text: yup.string().nullable(),
@@ -11,9 +11,9 @@ const offerScheme = yup.object().shape({
   status: yup.string().nullable().default('pending'),
 });
 
-module.exports = ({ client, ...db }) =>
+module.exports = (db) =>
   new Entity({
-    client,
+    client: db.client,
     modelName: 'Offer',
     tableName: 'Offers',
     yupScheme: offerScheme,

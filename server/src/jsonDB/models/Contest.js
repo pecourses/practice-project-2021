@@ -2,7 +2,7 @@ const yup = require('yup');
 const Entity = require('../Entity');
 
 const contestScheme = yup.object().shape({
-  id: yup.number().integer().required().primaryKey().autogenerate('increment'),
+  id: yup.number().integer().optional().primaryKey().autogenerate('increment'),
   orderId: yup.string().required(),
   userId: yup.number().integer().required().foreignKey({ references: { table: 'Users', key: 'id' } }), // fk
   status: yup.string().required(),
@@ -23,9 +23,9 @@ const contestScheme = yup.object().shape({
   createdAt: yup.date().nullable().default(() => Date.now()),
 });
 
-module.exports = ({ client, ...db }) =>
+module.exports = (db) =>
   new Entity({
-    client,
+    client: db.client,
     modelName: 'Contest',
     tableName: 'Contests',
     yupScheme: contestScheme,

@@ -9,9 +9,9 @@ const bankScheme = yup.object().shape({
   balance: yup.number().default(0).min(0).required(),
 });
 
-module.exports = ({ client, ...db }) =>
+module.exports = (db) =>
   new Entity({
-    client,
+    client: db.client,
     modelName: 'Bank',
     tableName: 'Banks',
     yupScheme: bankScheme,

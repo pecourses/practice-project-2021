@@ -1,4 +1,5 @@
 const db = require('../models');
+const dbClient = require('../jsonDB');
 const ServerError =require('../errors/ServerError');
 const contestQueries = require('./queries/contestQueries');
 const userQueries = require('./queries/userQueries');
@@ -13,13 +14,20 @@ module.exports.dataForContest = async (req, res, next) => {
     console.log(req.body, characteristic1, characteristic2);
     const types = [characteristic1, characteristic2, 'industry'].filter(Boolean);
 
-    const characteristics = await db.Selects.findAll({
+    /* const characteristics = await db.Selects.findAll({
       where: {
         type: {
           [ db.Sequelize.Op.or ]: types,
         },
       },
+    }); */
+
+    const characteristics = await dbClient.Selects.findAll({
+      where: {
+        type: types,
+      },
     });
+
     if (!characteristics) {
       return next(new ServerError());
     }
@@ -38,7 +46,7 @@ module.exports.dataForContest = async (req, res, next) => {
 
 module.exports.getContestById = async (req, res, next) => {
   try {
-    let contestInfo = await db.Contests.findOne({
+    /* let contestInfo = await db.Contests.findOne({
       where: { id: req.headers.contestid },
       order: [
         [db.Offers, 'id', 'asc'],
@@ -92,7 +100,15 @@ module.exports.getContestById = async (req, res, next) => {
         offer.mark = offer.Rating.mark;
       }
       delete offer.Rating;
-    });
+    }); */
+
+    const contestInfo = await dbClient.Contests.findOne({ where: { id: req.headers.contestid } });
+    contestInfo.User = await dbClient.Users.findByPk(contestInfo.userId);
+    contestInfo.Offers = await dbClient.Offers.findAll({ where: req.tokenData.role === CONSTANTS.CREATOR ? { userId: req.tokenData.userId } : {} });
+    Promise.all(contestInfo.Offers.map(async (v, i) => {
+      const user = await dbClient.Users.findByPk(v.userId);
+      contestInfo.Offers[i].User = user;
+    }));
     res.send(contestInfo);
   } catch (e) {
     next(new ServerError());
@@ -141,6 +157,7 @@ module.exports.setNewOffer = async (req, res, next) => {
     const User = Object.assign({}, req.tokenData, { id: req.tokenData.userId });
     res.send(Object.assign({}, result, { User }));
   } catch (e) {
+    console.log(e);
     return next(new ServerError());
   }
 };
@@ -216,7 +233,7 @@ module.exports.setOfferStatus = async (req, res, next) => {
 };
 
 module.exports.getCustomersContests = (req, res, next) => {
-  db.Contests.findAll({
+  /* db.Contests.findAll({
     where: { status: req.headers.status, userId: req.tokenData.userId },
     limit: req.body.limit,
     offset: req.body.offset ? req.body.offset : 0,
@@ -228,10 +245,21 @@ module.exports.getCustomersContests = (req, res, next) => {
         attributes: ['id'],
       },
     ],
+  }) */
+  dbClient.Contests.findAll({
+    where: {
+      status: req.headers.status,
+      userId: req.tokenData.userId,
+    },
+    limit: req.body.limit,
   })
     .then(contests => {
       contests.forEach(
-        contest => contest.dataValues.count = contest.dataValues.Offers.length);
+        // contest => contest.dataValues.count = contest.dataValues.Offers.length);
+        async contest => {
+          const offers = await dbClient.Offers.findOne({ where: { contestId: contest.id } });
+          contest.count = offers.length;
+        });
       let haveMore = true;
       if (contests.length === 0) {
         haveMore = false;
@@ -244,7 +272,7 @@ module.exports.getCustomersContests = (req, res, next) => {
 module.exports.getContests = (req, res, next) => {
   const predicates = UtilFunctions.createWhereForAllContests(req.body.typeIndex,
     req.body.contestId, req.body.industry, req.body.awardSort);
-  db.Contests.findAll({
+  /* db.Contests.findAll({
     where: predicates.where,
     order: predicates.order,
     limit: req.body.limit,
@@ -257,10 +285,19 @@ module.exports.getContests = (req, res, next) => {
         attributes: ['id'],
       },
     ],
+  }) */
+
+  dbClient.Contests.findAll({
+    where: predicates.where,
+    limit: req.body.limit,
   })
     .then(contests => {
       contests.forEach(
-        contest => contest.dataValues.count = contest.dataValues.Offers.length);
+        // contest => contest.dataValues.count = contest.dataValues.Offers.length);
+        async contest => {
+          const offers = await dbClient.Offers.findOne({ where: req.body.ownEntries ? { userId: req.tokenData.userId, contestId: contest.id } : { contestId: contest.id } });
+          contest.count = offers?.length;
+        });
       let haveMore = true;
       if (contests.length === 0) {
         haveMore = false;

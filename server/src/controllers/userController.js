@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
 const CONSTANTS = require('../constants');
 const bd = require('../models');
+const dbClient = require('../jsonDB');
 const NotUniqueEmail = require('../errors/NotUniqueEmail');
+const NotEnoughMoney = require('../errors/NotEnoughMoney');
 const moment = require('moment');
 const { v4: uuid } = require('uuid');
 const controller = require('../socketInit');
@@ -104,10 +106,10 @@ module.exports.changeMark = async (req, res, next) => {
 };
 
 module.exports.payment = async (req, res, next) => {
-  let transaction;
+  // let transaction;
   try {
-    transaction = await bd.sequelize.transaction();
-    await bankQueries.updateBankBalance({
+    // transaction = await bd.sequelize.transaction();
+    /* await bankQueries.updateBankBalance({
       balance: bd.sequelize.literal(`
                 CASE
             WHEN "cardNumber"='${ req.body.number.replace(/ /g,
@@ -125,7 +127,30 @@ module.exports.payment = async (req, res, next) => {
         ],
       },
     },
-    transaction);
+    transaction); */
+
+    const foundUserMoney = await dbClient.Banks.findOne({
+      where: {
+        cardNumber: req.body.number.replace(/ /g, ''),
+        cvc: req.body.cvc,
+        expiry: req.body.expiry,
+      },
+    });
+    const foundSHMoney = await dbClient.Banks.findOne({
+      where: {
+        cardNumber: CONSTANTS.SQUADHELP_BANK_NUMBER,
+        cvc: CONSTANTS.SQUADHELP_BANK_CVC,
+        expiry: CONSTANTS.SQUADHELP_BANK_EXPIRY,
+      },
+    });
+
+    if (!foundSHMoney || !foundUserMoney) {
+      throw new NotEnoughMoney();
+    }
+
+    await dbClient.Banks.updateByPk(foundUserMoney.cardNumber, { balance: Number(foundUserMoney.balance) - Number(req.body.price) });
+    await dbClient.Banks.updateByPk(foundSHMoney.cardNumber, { balance: Number(foundUserMoney.balance) + Number(req.body.price)  });
+
     const orderId = uuid();
     req.body.contests.forEach((contest, index) => {
       const prize = index === req.body.contests.length - 1 ? Math.ceil(
@@ -140,11 +165,12 @@ module.exports.payment = async (req, res, next) => {
         prize,
       });
     });
-    await bd.Contests.bulkCreate(req.body.contests, transaction);
-    transaction.commit();
+    // await bd.Contests.bulkCreate(req.body.contests, transaction);
+    await dbClient.Contests.bulkCreate(req.body.contests);
+    // transaction.commit();
     res.send();
   } catch (err) {
-    transaction.rollback();
+    // transaction.rollback();
     next(err);
   }
 };
@@ -204,5 +230,3 @@ module.exports.cashout = async (req, res, next) => {
     next(err);
   }
 };
-
-

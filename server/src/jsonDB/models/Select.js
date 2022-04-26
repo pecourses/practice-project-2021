@@ -6,9 +6,9 @@ const selectScheme = yup.object().shape({
   describe: yup.string().required().primaryKey(),
 });
 
-module.exports = ({ client, ...db }) =>
+module.exports = (db) =>
   new Entity({
-    client,
+    client: db.client,
     modelName: 'Select',
     tableName: 'Selects',
     yupScheme: selectScheme,

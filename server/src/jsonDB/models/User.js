@@ -2,7 +2,7 @@ const yup = require('yup');
 const Entity = require('../Entity');
 
 const userScheme = yup.object().shape({
-  id: yup.number().integer().min(0).primaryKey().autogenerate('increment'),
+  id: yup.number().integer().optional().min(0).primaryKey().autogenerate('increment'),
   firstName: yup.string().required(),
   lastName: yup.string().required(),
   displayName: yup.string().required(),
@@ -15,9 +15,9 @@ const userScheme = yup.object().shape({
   rating: yup.number().default(0).required(),
 });
 
-module.exports = ({ client, ...db }) =>
+module.exports = (db) =>
   new Entity({
-    client,
+    client: db.client,
     modelName: 'User',
     tableName: 'Users',
     yupScheme: userScheme,

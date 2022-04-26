@@ -7,9 +7,9 @@ const ratingScheme = yup.object().shape({
   mark: yup.number().default(0).min(0).max(5).required(),
 });
 
-module.exports = ({ client, ...db }) =>
+module.exports = (db) =>
   new Entity({
-    client,
+    client: db.client,
     modelName: 'Rating',
     tableName: 'Ratings',
     yupScheme: ratingScheme,

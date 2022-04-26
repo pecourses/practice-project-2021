@@ -95,7 +95,7 @@ const OfferBox = (props) => {
     data, role, id, contestType,
   } = props;
   const {
-    avatar, firstName, lastName, email, rating,
+    firstName, lastName, email, rating,
   } = props.data.User;
   return (
     <div className={styles.offerContainer}>
@@ -104,7 +104,7 @@ const OfferBox = (props) => {
         <div className={styles.userInfo}>
           <div className={styles.creativeInfoContainer}>
             <img
-              src={avatar === 'anon.png' ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${avatar}`}
+              src={props.data.User?.avatar === 'anon.png' ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${props.data.User?.avatar}`}
               alt="user"
             />
             <div className={styles.nameAndEmail}>

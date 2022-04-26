@@ -47,6 +47,7 @@ module.exports = class Entity {
     } = props;
 
     this.dbClient = dbClient;
+    this.models = db;
     this.path = `/${tableName}`;
     try {
       this.dbClient.getData(this.path);
@@ -67,7 +68,14 @@ module.exports = class Entity {
   }
 
   async nextId() {
-    return this.dbClient.count(this.path) + 1;
+    this.dbClient.reload();
+    const all = await this.findAll();
+    let maxId = 0;
+    all.forEach((v) => {
+      if (v.id > maxId) maxId = v.id;
+    });
+
+    return maxId + 1;
   }
 
   async getRowsByPredicate(rows, predicate = {}) {
@@ -76,9 +84,15 @@ module.exports = class Entity {
           const verdicts = [];
           for (const key in predicate.where) {
             const comparedValue = predicate.where[key];
-            if (data[key] === comparedValue) {
-              verdicts.push(true);
+
+            if (Array.isArray(comparedValue)) {
+              verdicts.push(comparedValue.some(v => data[key] === v));
+            } else if (typeof comparedValue === 'function') {
+              verdicts.push(comparedValue(data[key]));
+            } else {
+              verdicts.push(data[key] == comparedValue);
             }
+            
           }
           return verdicts.length && verdicts.every((v) => v === true);
         })
@@ -96,12 +110,12 @@ module.exports = class Entity {
           if (validator === 'foreignKeyValidation') {
             const fk = fieldValidation;
             if (fk.references.table && fk.references.key) {
-              const foreignTable = db[fk.references.table];
+              const foreignTable = this.models[fk.references.table];
               if (!foreignTable || !foreignTable?.yupScheme?.fields?.[fk.references.key]) {
                 throw new Error(`Cannot satisfy foreignKey constraint in model ${this.name} field '${field}' to table ${fk.references.table}(column ${fk.references.key})`);
               }
     
-              const found = foreignTable.findOne({ where: { [field]: newData[field] } });
+              const found = foreignTable.findOne({ where: { [field]: data[field] } });
               if (!found) {
                 throw new Error(`${type.charAt(0).toUpperCase() + type.slice(1)} in table '${this.name}' violates foreign key constraint "${this.name}_${field}_fk" on table ${foreignTable}`);
               }
@@ -162,13 +176,13 @@ module.exports = class Entity {
 
   async generatePrimaryKeys() {
     const primaryKeys = {};
-    for (const field in this.autogenerate) {
-      const generate = this.autogenerate[field];
+    for (const field in this.autogenerateFields) {
+      const generate = this.autogenerateFields[field];
       let value;
       if (typeof generate === 'function') {
         value = await generate();
       } else if (generate === 'increment') {
-        value = await nextId();
+        value = await this.nextId();
       } else if (generate === 'uuid') {
         value = uuid.v4();
       }
@@ -182,7 +196,7 @@ module.exports = class Entity {
       Object.entries(this.foreignKeyValidationFields)
       .forEach(([field, fk]) => {
         if (fk.references.table && fk.references.key) {
-          const foreignTable = db[fk.references.table];
+          const foreignTable = this.models[fk.references.table];
           if (!foreignTable || !foreignTable?.yupScheme?.fields?.[fk.references.key]) {
             throw new Error(`Cannot satisfy foreignKey constraint in model ${this.name} field '${field}' to table ${fk.references.table}(column ${fk.references.key})`);
           }
@@ -215,8 +229,8 @@ module.exports = class Entity {
 
     const pks = await this.generatePrimaryKeys();
     const newRow = await this.mergeRows(pks, data, { type: 'create' });
-
-    await this.saveRows(Object.assign([], existingData, newRow));
+    existingData.push(newRow);
+    await this.saveRows(existingData);
     return newRow;
   }
 
@@ -229,7 +243,7 @@ module.exports = class Entity {
       throw new Error('Bulk create param should be an Array');
     }
 
-    const createdBulkData = data.map(async (d) => await this.create(d));
+    const createdBulkData = await Promise.all(data.map(async (d) => await this.create(d)));
 
     return createdBulkData;
   }
@@ -241,7 +255,7 @@ module.exports = class Entity {
   async findByPk(pk) {
     const existingData = await this.findAll();
     const foundData =
-      existingData.find(await this.byPkPredicate.bind(this)) || null;
+      existingData.find(await this.byPkPredicate.call(this, pk)) || null;
     return foundData;
   }
 
@@ -315,13 +329,11 @@ module.exports = class Entity {
     return [count, updatedRows];
   }
 
-  async byPkPredicate(row) {
-    for (const primaryKey of this.primaryKeyFields) {
-      if (row[primaryKey] === pk) {
-        return true;
-      };
-    }
-    return false;
+  byPkPredicate(pkValue) {
+    return (row) => {
+      return Object.keys(this.primaryKeyValidationFields)
+        .some(primaryKey => row[primaryKey] === pkValue);
+    };
   }
 
   /**
@@ -339,7 +351,7 @@ module.exports = class Entity {
     );
     await this.customYupValidation(data, 'foreignKeyValidation', 404);
 
-    const foundIndex = existingData.findIndex(await this.byPkPredicate.bind(this));
+    const foundIndex = existingData.findIndex(this.byPkPredicate.call(this, pk));
     if(foundIndex === -1) {
       return null;
     }
