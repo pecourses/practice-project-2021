@@ -12,7 +12,8 @@ module.exports.updateContest = async (data, predicate, transaction) => {
   if (updatedCount !== 1) {
     throw new ServerError('cannot update Contest');
   } else {
-    return updatedContest.dataValues;
+    // return updatedContest.dataValues;
+    return updatedContest;
   }
 };
 
@@ -26,7 +27,8 @@ module.exports.updateContestStatus = async (data, predicate, transaction) => {
   if (updateResult[ 0 ] < 1) {
     throw new ServerError('cannot update Contest');
   } else {
-    return updateResult[ 1 ][ 0 ].dataValues;
+    // return updateResult[ 1 ][ 0 ].dataValues;
+    return updateResult[ 1 ][ 0 ];
   }
 };
 
@@ -40,7 +42,8 @@ module.exports.updateOffer = async (data, predicate, transaction) => {
   if (updatedCount !== 1) {
     throw new ServerError('cannot update offer!');
   } else {
-    return updatedOffer.dataValues;
+    // return updatedOffer.dataValues;
+    return updatedOffer;
   }
 };
 

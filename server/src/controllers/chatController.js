@@ -170,13 +170,22 @@ module.exports.getPreview = async (req, res, next) => {
 
     conversations.forEach((conversation) => {
       senders.forEach(sender => {
-        if (conversation.participants.includes(sender.dataValues.id)) {
+        /* if (conversation.participants.includes(sender.dataValues.id)) {
           conversation.interlocutor = {
             id: sender.dataValues.id,
             firstName: sender.dataValues.firstName,
             lastName: sender.dataValues.lastName,
             displayName: sender.dataValues.displayName,
             avatar: sender.dataValues.avatar,
+          };
+        } */
+        if (conversation.participants.includes(sender.id)) {
+          conversation.interlocutor = {
+            id: sender.id,
+            firstName: sender.firstName,
+            lastName: sender.lastName,
+            displayName: sender.displayName,
+            avatar: sender.avatar,
           };
         }
       });

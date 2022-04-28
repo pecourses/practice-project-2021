@@ -108,7 +108,14 @@ module.exports.canSendOffer = async (req, res, next) => {
 
 module.exports.onlyForCustomerWhoCreateContest = async (req, res, next) => {
   try {
-    const result = await bd.Contests.findOne({
+    /* const result = await bd.Contests.findOne({
+      where: {
+        userId: req.tokenData.userId,
+        id: req.body.contestId,
+        status: CONSTANTS.CONTEST_STATUS_ACTIVE,
+      },
+    }); */
+    const result = await dbClient.Contests.findOne({
       where: {
         userId: req.tokenData.userId,
         id: req.body.contestId,

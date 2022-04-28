@@ -76,11 +76,11 @@ module.exports.changeMark = async (req, res, next) => {
   const { isFirst, offerId, mark, creatorId } = req.body;
   const userId = req.tokenData.userId;
   try {
-    transaction = await bd.sequelize.transaction(
-      { isolationLevel: bd.Sequelize.Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED });
+    // transaction = await bd.sequelize.transaction(
+    //   { isolationLevel: bd.Sequelize.Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED });
     const query = getQuery(offerId, userId, mark, isFirst, transaction);
     await query();
-    const offersArray = await bd.Ratings.findAll({
+    /* const offersArray = await bd.Ratings.findAll({
       include: [
         {
           model: bd.Offers,
@@ -89,18 +89,28 @@ module.exports.changeMark = async (req, res, next) => {
         },
       ],
       transaction,
-    });
-    for (let i = 0; i < offersArray.length; i++) {
+    }); */
+    const offersArray = await dbClient.Ratings.findAll();
+    await Promise.all(
+      offersArray.map(async (v, i) => {
+        offersArray[i].Offer = await dbClient.Offers.findOne({ where: { userId: creatorId } });
+      }),
+    );
+
+    /* for (let i = 0; i < offersArray.length; i++) {
       sum += offersArray[ i ].dataValues.mark;
+    } */
+    for (let i = 0; i < offersArray.length; i++) {
+      sum += offersArray[ i ].mark;
     }
     avg = sum / offersArray.length;
 
     await userQueries.updateUser({ rating: avg }, creatorId, transaction);
-    transaction.commit();
+    // transaction.commit();
     controller.getNotificationController().emitChangeMark(creatorId);
     res.send({ userId: creatorId, rating: avg });
   } catch (err) {
-    transaction.rollback();
+    // transaction.rollback();
     next(err);
   }
 };
@@ -200,8 +210,8 @@ module.exports.updateUser = async (req, res, next) => {
 module.exports.cashout = async (req, res, next) => {
   let transaction;
   try {
-    transaction = await bd.sequelize.transaction();
-    const updatedUser = await userQueries.updateUser(
+    // transaction = await bd.sequelize.transaction();
+    /* const updatedUser = await userQueries.updateUser(
       { balance: bd.sequelize.literal('balance - ' + req.body.sum) },
       req.tokenData.userId, transaction);
     await bankQueries.updateBankBalance({
@@ -222,11 +232,41 @@ module.exports.cashout = async (req, res, next) => {
         ],
       },
     },
-    transaction);
-    transaction.commit();
+    transaction); */
+
+    const foundUser = await dbClient.Users.findByPk(req.tokenData.userId);
+    const updatedUser = await userQueries.updateUser(
+      { balance: foundUser.balance - req.body.sum },
+      foundUser.id, transaction);
+
+    /* await bankQueries.updateBankBalance({
+      balance: bd.sequelize.literal(`CASE
+                WHEN "cardNumber"='${ req.body.number.replace(/ /g,
+    '') }' AND "expiry"='${ req.body.expiry }' AND "cvc"='${ req.body.cvc }'
+                    THEN "balance"+${ req.body.sum }
+                WHEN "cardNumber"='${ CONSTANTS.SQUADHELP_BANK_NUMBER }' AND "expiry"='${ CONSTANTS.SQUADHELP_BANK_EXPIRY }' AND "cvc"='${ CONSTANTS.SQUADHELP_BANK_CVC }'
+                    THEN "balance"-${ req.body.sum }
+                END
+                `),
+    },
+    {
+      cardNumber: [
+        CONSTANTS.SQUADHELP_BANK_NUMBER,
+        req.body.number.replace(/ /g, ''),
+      ],
+    },
+    transaction); */
+    const foundBalance1 = await dbClient.Banks.findOne({ where: { cardNumber: req.body.number.replace(/ /g, ''), cvc: req.body.cvc, expiry: req.body.expiry } });
+    const foundBalance2 = await dbClient.Banks.findOne({ where: { cardNumber: CONSTANTS.SQUADHELP_BANK_NUMBER, cvc: CONSTANTS.SQUADHELP_BANK_CVC, expiry: CONSTANTS.SQUADHELP_BANK_EXPIRY } });
+    if (foundBalance1 && foundBalance2) {
+      await dbClient.Banks.updateByPk(foundBalance1.cardNumber, { balance: Number(foundBalance1.balance) + Number(req.body.sum) });
+      await dbClient.Banks.updateByPk(foundBalance2.cardNumber, { balance: Number(foundBalance2.balance) - Number(req.body.sum) });
+    }
+
+    // transaction.commit();
     res.send({ balance: updatedUser.balance });
   } catch (err) {
-    transaction.rollback();
+    // transaction.rollback();
     next(err);
   }
 };

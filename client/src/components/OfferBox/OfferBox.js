@@ -94,6 +94,7 @@ const OfferBox = (props) => {
   const {
     data, role, id, contestType,
   } = props;
+  console.log(props);
   const {
     firstName, lastName, email, rating,
   } = props.data.User;

@@ -12,7 +12,8 @@ module.exports.updateRating = async (data, predicate, transaction) => {
   if (updatedCount !== 1) {
     throw new ServerError('cannot update mark on this offer');
   }
-  return updatedRating.dataValues;
+  // return updatedRating.dataValues;
+  return updatedRating;
 };
 
 module.exports.createRating = async (data, transaction) => {

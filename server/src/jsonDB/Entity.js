@@ -90,7 +90,11 @@ module.exports = class Entity {
             } else if (typeof comparedValue === 'function') {
               verdicts.push(comparedValue(data[key]));
             } else {
-              verdicts.push(data[key] == comparedValue);
+              if ((typeof data[key] === 'number' && typeof comparedValue === 'string') || (typeof data[key] === 'string' && typeof comparedValue === 'number')) {
+                verdicts.push(data[key] == comparedValue);
+              } else {
+                verdicts.push(data[key] === comparedValue);
+              }
             }
             
           }
@@ -317,6 +321,10 @@ module.exports = class Entity {
    * @returns {Promise<[number, object[]]]>} updated count and rows of entity model
    */
   async update(data, predicate) {
+    if (predicate && !predicate.where && !predicate.limit) {
+      throw new Error('Where or limit predicate not found');
+    }
+
     const existingData = await this.findAll();
 
     await this.customYupValidation(
