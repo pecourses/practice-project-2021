@@ -30,7 +30,7 @@ const Home = (props) => {
   return (
     <>
       <Header />
-      {isFetching ? <Spinner /> : (
+      {isFetching ? <Spinner mtop /> : (
         <>
           <div className={styles.container}>
             <div className={styles.headerBar}>
