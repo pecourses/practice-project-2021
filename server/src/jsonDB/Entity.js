@@ -242,10 +242,25 @@ module.exports = class Entity {
     if (!Array.isArray(data)) {
       throw new Error('Bulk create param should be an Array');
     }
+    const existingData = await this.findAll();
 
-    const createdBulkData = await Promise.all(data.map(async (d) => await this.create(d)));
+    for (const row of data) {
+      await this.yupValidateData(row);
 
-    return createdBulkData;
+      await this.customYupValidation(
+        row,
+        ['uniqueValidation', 'primaryKeyValidation'],
+        409
+      );
+      await this.customYupValidation(row, 'foreignKeyValidation', 404);
+  
+      const pks = await this.generatePrimaryKeys();
+      const newRow = await this.mergeRows(pks, row, { type: 'create' });
+      existingData.push(newRow);
+      await this.saveRows(existingData);
+    }
+
+    return existingData;
   }
 
   /**

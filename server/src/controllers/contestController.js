@@ -258,7 +258,7 @@ module.exports.getCustomersContests = (req, res, next) => {
         // contest => contest.dataValues.count = contest.dataValues.Offers.length);
         async contest => {
           const offers = await dbClient.Offers.findOne({ where: { contestId: contest.id } });
-          contest.count = offers.length;
+          contest.count = offers?.length || 0;
         });
       let haveMore = true;
       if (contests.length === 0) {

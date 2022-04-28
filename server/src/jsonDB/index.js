@@ -1,9 +1,9 @@
+const { readdirSync } = require('fs');
 const path = require('path');
 const { JsonDB } = require('node-json-db');
 const { Config } = require('node-json-db/dist/lib/JsonDBConfig');
 
 const config = require('../config/jsonDBConfig.json');
-const { readdirSync } = require('fs');
 const mode = process.env.NODE_ENV || 'development';
 const filePath = path.resolve(__dirname, config[mode].file);
 

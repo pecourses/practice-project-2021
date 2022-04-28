@@ -1,22 +1,22 @@
 const dbClient = require('../index');
 
-dbClient.Banks.bulkCreate(
+dbClient.Users.bulkCreate(
   [
     {
       firstName: 'Buyer',
       lastName: 'Buyerovich',
       displayName: 'buyer',
-      email: 'buyer@gmail.com', // unique
+      email: 'buyer@gmail.com', // should be unique
       role: 'customer',
-      password: '$2a$05$1x2rTaNceS3kl1Jih0lLyeybO54.ud5b69E9Ta/kOhnVuwvFlz00G',
+      password: '$2a$05$0RzS9MGQh8bpFWV7a4iIa.xhlAmSEct4RkzmPKwQIFBJz40FSkBUO', // buyer@gmail.com
     },
     {
       firstName: 'Creative',
       lastName: 'Creativovich',
       displayName: 'creative',
-      email: 'creative@gmail.com', // unique
+      email: 'creative@gmail.com', // should be unique
       role: 'creator',
-      password: '$2a$05$IsAHsVCjgmjB46UldgNbAe7DhCbsQaWMNXVTRXPnjRN2nAcPizjVi',
+      password: '$2a$05$BtZIvrMY7uFLZJE4dyWgOehTWPMoPElfv7MGAFI0uDbaCv3PX08Bm', // creative@gmail.com
     },
   ],
 );
