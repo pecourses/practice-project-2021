@@ -102,6 +102,8 @@ module.exports = class Entity {
         })
       : rows;
 
+    // TODO order, offset, attributes, include, exclude
+
     return foundRows.slice(0, predicate.limit || foundRows.length);
   }
 
@@ -148,9 +150,10 @@ module.exports = class Entity {
   }
 
   async yupValidateData(data) {
+    // TODO more testing
     try {
       if (this.yupScheme) {
-        await this.yupScheme.validate(data);
+        await this.yupScheme.validate(data, { strict: true });
       }
     } catch (error) {
       throw new HttpError(400, error.message);
@@ -275,6 +278,8 @@ module.exports = class Entity {
     const existingData = await this.findAll();
     const foundData =
       existingData.find(await this.byPkPredicate.call(this, pk)) || null;
+
+    // TODO conversions to column types
     return foundData;
   }
 
@@ -289,6 +294,8 @@ module.exports = class Entity {
     const existingData = this.dbClient.getData(this.path);
 
     const newArray = await this.getRowsByPredicate(existingData, predicate);
+
+    // TODO conversions to column types
 
     return newArray;
   }
@@ -309,6 +316,8 @@ module.exports = class Entity {
     if (!found.length) {
       return null;
     }
+
+    // TODO conversions to column types
 
     return found[0];
   }
