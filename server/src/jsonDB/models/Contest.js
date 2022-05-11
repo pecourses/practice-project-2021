@@ -20,7 +20,6 @@ const contestScheme = yup.object().shape({
   nameVenture: yup.string().nullable(),
   typeOfTagline: yup.string().nullable(),
   brandStyle: yup.string().nullable(),
-  createdAt: yup.date().nullable().default(() => Date.now()),
 });
 
 module.exports = (db) =>
@@ -29,4 +28,5 @@ module.exports = (db) =>
     modelName: 'Contest',
     tableName: 'Contests',
     yupScheme: contestScheme,
+    timestamps: true,
   }, db);

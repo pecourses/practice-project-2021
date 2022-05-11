@@ -183,13 +183,13 @@ module.exports = class Entity {
       ? {
           createdAt:
             options.type === 'create'
-            ? Date.now()
+            ? new Date().toJSON()
             : oldData.createdAt,
-          updatedAt: Date.now(),
+          updatedAt: new Date().toJSON(),
         }
       : {};
 
-    return Object.assign({}, defaults, oldData, timestamps, newData);
+    return Object.assign({}, defaults, oldData, timestamps, await this.yupScheme.cast(newData));
   }
 
   async generatePrimaryKeys() {
