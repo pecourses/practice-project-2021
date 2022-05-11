@@ -224,7 +224,6 @@ module.exports = class Entity {
    * @returns {Promise<object} created row of entity model
    */
   async create(data) {
-    await this.yupValidateData(data);
     const existingData = await this.findAll();
 
     await this.customYupValidation(
@@ -236,6 +235,8 @@ module.exports = class Entity {
 
     const pks = await this.generatePrimaryKeys();
     const newRow = await this.mergeRows(pks, data, { type: 'create' });
+    await this.yupValidateData(newRow);
+
     existingData.push(newRow);
     await this.saveRows(existingData);
     return newRow;
@@ -252,7 +253,6 @@ module.exports = class Entity {
     const existingData = await this.findAll();
 
     for (const row of data) {
-      await this.yupValidateData(row);
 
       await this.customYupValidation(
         row,
@@ -263,6 +263,8 @@ module.exports = class Entity {
   
       const pks = await this.generatePrimaryKeys();
       const newRow = await this.mergeRows(pks, row, { type: 'create' });
+      await this.yupValidateData(newRow);
+
       existingData.push(newRow);
       await this.saveRows(existingData);
     }
