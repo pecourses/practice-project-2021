@@ -128,6 +128,17 @@ module.exports = class Entity {
             } else {
               throw new Error(`Foreign key of model ${this.name} field ${field} should have references option`);
             }
+          } else if (validator === 'primaryKeyValidation') {
+            const pkValues = {};
+            for (const key in this[`${validator}Fields`]) {
+              if (data[key]) {
+                pkValues[key] = data[key];
+              }
+            }
+            const found = await this.findOne({ where: pkValues });
+            if (found) {
+              throw new HttpError(code, typeof fieldValidation === 'string' ? fieldValidation : fieldValidation.message);
+            }
           } else {
             const found = await this.findOne({ where: { [field]: data[field] } });
             if (found) {
