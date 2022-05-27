@@ -1,4 +1,5 @@
 const bd = require('../models');
+const dbClient = require('../jsonDB');
 const NotFound = require('../errors/UserNotFoundError');
 const RightsError = require('../errors/RightsError');
 const ServerError = require('../errors/ServerError');
@@ -20,11 +21,14 @@ module.exports.canGetContest = async (req, res, next) => {
   let result = null;
   try {
     if (req.tokenData.role === CONSTANTS.CUSTOMER) {
-      result = await bd.Contests.findOne({
+      /* result = await bd.Contests.findOne({
+        where: { id: req.headers.contestid, userId: req.tokenData.userId },
+      }); */
+      result = await dbClient.Contests.findOne({
         where: { id: req.headers.contestid, userId: req.tokenData.userId },
       });
     } else if (req.tokenData.role === CONSTANTS.CREATOR) {
-      result = await bd.Contests.findOne({
+      /* result = await bd.Contests.findOne({
         where: {
           id: req.headers.contestid,
           status: {
@@ -33,6 +37,15 @@ module.exports.canGetContest = async (req, res, next) => {
               CONSTANTS.CONTEST_STATUS_FINISHED,
             ],
           },
+        },
+      }); */
+      result = await dbClient.Contests.findOne({
+        where: {
+          id: req.headers.contestid,
+          status: [
+            CONSTANTS.CONTEST_STATUS_ACTIVE,
+            CONSTANTS.CONTEST_STATUS_FINISHED,
+          ],
         },
       });
     }
@@ -64,7 +77,7 @@ module.exports.canSendOffer = async (req, res, next) => {
     return next(new RightsError());
   }
   try {
-    const result = await bd.Contests.findOne({
+    /* const result = await bd.Contests.findOne({
       where: {
         id: req.body.contestId,
       },
@@ -72,6 +85,17 @@ module.exports.canSendOffer = async (req, res, next) => {
     });
     if (result.get({ plain: true }).status ===
       CONSTANTS.CONTEST_STATUS_ACTIVE) {
+      next();
+    } else {
+      return next(new RightsError());
+    } */
+
+    const result = await dbClient.Contests.findOne({
+      where: {
+        id: req.body.contestId,
+      },
+    });
+    if (result.status === CONSTANTS.CONTEST_STATUS_ACTIVE) {
       next();
     } else {
       return next(new RightsError());
@@ -84,7 +108,14 @@ module.exports.canSendOffer = async (req, res, next) => {
 
 module.exports.onlyForCustomerWhoCreateContest = async (req, res, next) => {
   try {
-    const result = await bd.Contests.findOne({
+    /* const result = await bd.Contests.findOne({
+      where: {
+        userId: req.tokenData.userId,
+        id: req.body.contestId,
+        status: CONSTANTS.CONTEST_STATUS_ACTIVE,
+      },
+    }); */
+    const result = await dbClient.Contests.findOne({
       where: {
         userId: req.tokenData.userId,
         id: req.body.contestId,
