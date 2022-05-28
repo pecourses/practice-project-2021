@@ -18,10 +18,13 @@ const PrivateHoc = (Component, props) => {
       }
     }
 
+    
     render() {
+      if (this.props.error) return <Redirect to="/" />;
+
       return (
         <>
-          {this.props.isFetching ? <Spinner />
+          {this.props.isFetching ? <Spinner mtop />
             : <Component history={this.props.history} match={this.props.match} {...props} />}
         </>
       );
