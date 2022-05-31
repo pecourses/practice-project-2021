@@ -3,6 +3,7 @@ const Message = require('../models/mongoModels/Message');
 const Catalog = require('../models/mongoModels/Catalog');
 const moment = require('moment');
 const db = require('../models');
+const dbClient = require('../jsonDB');
 const userQueries = require('./queries/userQueries');
 const controller = require('../socketInit');
 const _ = require('lodash');
@@ -155,21 +156,36 @@ module.exports.getPreview = async (req, res, next) => {
       interlocutors.push(conversation.participants.find(
         (participant) => participant !== req.tokenData.userId));
     });
-    const senders = await db.Users.findAll({
+    /* const senders = await db.Users.findAll({
       where: {
         id: interlocutors,
       },
       attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
+    }); */
+    const senders = await dbClient.Users.findAll({
+      where: {
+        id: interlocutors,
+      },
     });
+
     conversations.forEach((conversation) => {
       senders.forEach(sender => {
-        if (conversation.participants.includes(sender.dataValues.id)) {
+        /* if (conversation.participants.includes(sender.dataValues.id)) {
           conversation.interlocutor = {
             id: sender.dataValues.id,
             firstName: sender.dataValues.firstName,
             lastName: sender.dataValues.lastName,
             displayName: sender.dataValues.displayName,
             avatar: sender.dataValues.avatar,
+          };
+        } */
+        if (conversation.participants.includes(sender.id)) {
+          conversation.interlocutor = {
+            id: sender.id,
+            firstName: sender.firstName,
+            lastName: sender.lastName,
+            displayName: sender.displayName,
+            avatar: sender.avatar,
           };
         }
       });
