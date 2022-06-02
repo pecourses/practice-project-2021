@@ -17,9 +17,10 @@ export default {
   ANONYM_IMAGE_PATH: '/staticImages/anonym.png',
   BASE_URL: `http://${serverIP}:${serverPort}/`,
   ACCESS_TOKEN: 'accessToken',
-  publicURL: env === 'production'
-    ? `http://${serverIP}:80/images/`
-    : `http://${serverIP}:${serverPort}/public/images/`,
+  publicURL:
+    env === 'production'
+      ? `http://${serverIP}:80/images/`
+      : `http://${serverIP}:${serverPort}/public/images/`,
   NORMAL_PREVIEW_CHAT_MODE: 'NORMAL_PREVIEW_CHAT_MODE',
   FAVORITE_PREVIEW_CHAT_MODE: 'FAVORITE_PREVIEW_CHAT_MODE',
   BLOCKED_PREVIEW_CHAT_MODE: 'BLOCKED_PREVIEW_CHAT_MODE',
@@ -43,13 +44,7 @@ export default {
   FooterItems: [
     {
       title: 'SQUADHELP',
-      items: [
-        'About',
-        'Contact',
-        'How It Works?',
-        'Testimonials',
-        'Our Work',
-      ],
+      items: ['About', 'Contact', 'How It Works?', 'Testimonials', 'Our Work'],
     },
     {
       title: 'RESOURCES',
@@ -79,11 +74,7 @@ export default {
     },
     {
       title: 'LEGAL',
-      items: [
-        'Terms of Service',
-        'Privacy Policy',
-        'Cookie Policy',
-      ],
+      items: ['Terms of Service', 'Privacy Policy', 'Cookie Policy'],
     },
   ],
 };

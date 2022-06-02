@@ -20,11 +20,11 @@ import browserHistory from './browserHistory';
 import ChatContainer from './components/Chat/ChatComponents/ChatContainer/ChatContainer';
 
 class App extends Component {
-  render() {
+  render () {
     return (
       <Router history={browserHistory}>
         <ToastContainer
-          position="top-center"
+          position='top-center'
           autoClose={5000}
           hideProgressBar
           newestOnTop={false}
@@ -35,14 +35,26 @@ class App extends Component {
           pauseOnHover
         />
         <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/login" component={OnlyNotAuthorizedUserHoc(LoginPage)} />
-          <Route exact path="/registration" component={OnlyNotAuthorizedUserHoc(RegistrationPage)} />
-          <Route exact path="/payment" component={PrivateHoc(Payment)} />
-          <Route exact path="/startContest" component={PrivateHoc(StartContestPage)} />
+          <Route exact path='/' component={Home} />
           <Route
             exact
-            path="/startContest/nameContest"
+            path='/login'
+            component={OnlyNotAuthorizedUserHoc(LoginPage)}
+          />
+          <Route
+            exact
+            path='/registration'
+            component={OnlyNotAuthorizedUserHoc(RegistrationPage)}
+          />
+          <Route exact path='/payment' component={PrivateHoc(Payment)} />
+          <Route
+            exact
+            path='/startContest'
+            component={PrivateHoc(StartContestPage)}
+          />
+          <Route
+            exact
+            path='/startContest/nameContest'
             component={PrivateHoc(ContestCreationPage, {
               contestType: CONSTANTS.NAME_CONTEST,
               title: 'Company Name',
@@ -50,7 +62,7 @@ class App extends Component {
           />
           <Route
             exact
-            path="/startContest/taglineContest"
+            path='/startContest/taglineContest'
             component={PrivateHoc(ContestCreationPage, {
               contestType: CONSTANTS.TAGLINE_CONTEST,
               title: 'TAGLINE',
@@ -58,15 +70,19 @@ class App extends Component {
           />
           <Route
             exact
-            path="/startContest/logoContest"
+            path='/startContest/logoContest'
             component={PrivateHoc(ContestCreationPage, {
               contestType: CONSTANTS.LOGO_CONTEST,
               title: 'LOGO',
             })}
           />
-          <Route exact path="/dashboard" component={PrivateHoc(Dashboard)} />
-          <Route exact path="/contest/:id" component={PrivateHoc(ContestPage)} />
-          <Route exact path="/account" component={PrivateHoc(UserProfile)} />
+          <Route exact path='/dashboard' component={PrivateHoc(Dashboard)} />
+          <Route
+            exact
+            path='/contest/:id'
+            component={PrivateHoc(ContestPage)}
+          />
+          <Route exact path='/account' component={PrivateHoc(UserProfile)} />
           <Route component={NotFound} />
         </Switch>
         <ChatContainer />

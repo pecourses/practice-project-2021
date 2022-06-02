@@ -3,11 +3,11 @@ import ACTION from '../actions/actionTypes';
 import * as restController from '../api/rest/restController';
 import CONSTANTS from '../constants';
 
-export function* changeMarkSaga(action) {
+export function * changeMarkSaga (action) {
   try {
     const { data } = yield restController.changeMark(action.data);
-    const offers = yield select((state) => state.contestByIdStore.offers);
-    offers.forEach((offer) => {
+    const offers = yield select(state => state.contestByIdStore.offers);
+    offers.forEach(offer => {
       if (offer.User.id === data.userId) {
         offer.User.rating = data.rating;
       }
@@ -21,10 +21,10 @@ export function* changeMarkSaga(action) {
   }
 }
 
-export function* addOfferSaga(action) {
+export function * addOfferSaga (action) {
   try {
     const { data } = yield restController.setNewOffer(action.data);
-    const offers = yield select((state) => state.contestByIdStore.offers);
+    const offers = yield select(state => state.contestByIdStore.offers);
     offers.unshift(data);
     yield put({ type: ACTION.ADD_NEW_OFFER_TO_STORE, data: offers });
   } catch (e) {
@@ -32,13 +32,16 @@ export function* addOfferSaga(action) {
   }
 }
 
-export function* setOfferStatusSaga(action) {
+export function * setOfferStatusSaga (action) {
   try {
     const { data } = yield restController.setOfferStatus(action.data);
-    const offers = yield select((state) => state.contestByIdStore.offers);
-    offers.forEach((offer) => {
+    const offers = yield select(state => state.contestByIdStore.offers);
+    offers.forEach(offer => {
       if (data.status === CONSTANTS.OFFER_STATUS_WON) {
-        offer.status = data.id === offer.id ? CONSTANTS.OFFER_STATUS_WON : CONSTANTS.OFFER_STATUS_REJECTED;
+        offer.status =
+          data.id === offer.id
+            ? CONSTANTS.OFFER_STATUS_WON
+            : CONSTANTS.OFFER_STATUS_REJECTED;
       } else if (data.id === offer.id) {
         offer.status = CONSTANTS.OFFER_STATUS_REJECTED;
       }

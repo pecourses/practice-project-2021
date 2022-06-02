@@ -8,20 +8,28 @@ import FormInput from '../FormInput/FormInput';
 import Schems from '../../validators/validationSchems';
 import Error from '../Error/Error';
 
-const UpdateUserInfoForm = (props) => {
-  const {
-    onSubmit, submitting, error, clearUserError,
-  } = props;
+const UpdateUserInfoForm = props => {
+  const { onSubmit, submitting, error, clearUserError } = props;
   return (
-    <Formik onSubmit={onSubmit} initialValues={props.initialValues} validationSchema={Schems.UpdateUserSchema}>
+    <Formik
+      onSubmit={onSubmit}
+      initialValues={props.initialValues}
+      validationSchema={Schems.UpdateUserSchema}
+    >
       <Form className={styles.updateContainer}>
-        {error && <Error data={error.data} status={error.status} clearError={clearUserError} />}
+        {error && (
+          <Error
+            data={error.data}
+            status={error.status}
+            clearError={clearUserError}
+          />
+        )}
         <div className={styles.container}>
           <span className={styles.label}>First Name</span>
           <FormInput
-            name="firstName"
-            type="text"
-            label="First Name"
+            name='firstName'
+            type='text'
+            label='First Name'
             classes={{
               container: styles.inputContainer,
               input: styles.input,
@@ -33,9 +41,9 @@ const UpdateUserInfoForm = (props) => {
         <div className={styles.container}>
           <span className={styles.label}>Last Name</span>
           <FormInput
-            name="lastName"
-            type="text"
-            label="LastName"
+            name='lastName'
+            type='text'
+            label='LastName'
             classes={{
               container: styles.inputContainer,
               input: styles.input,
@@ -47,9 +55,9 @@ const UpdateUserInfoForm = (props) => {
         <div className={styles.container}>
           <span className={styles.label}>Display Name</span>
           <FormInput
-            name="displayName"
-            type="text"
-            label="Display Name"
+            name='displayName'
+            type='text'
+            label='Display Name'
             classes={{
               container: styles.inputContainer,
               input: styles.input,
@@ -59,14 +67,14 @@ const UpdateUserInfoForm = (props) => {
           />
         </div>
         <ImageUpload
-          name="file"
+          name='file'
           classes={{
             uploadContainer: styles.imageUploadContainer,
             inputContainer: styles.uploadInputContainer,
             imgStyle: styles.imgStyle,
           }}
         />
-        <button type="submit" disabled={submitting}>
+        <button type='submit' disabled={submitting}>
           Submit
         </button>
       </Form>
@@ -74,7 +82,7 @@ const UpdateUserInfoForm = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const { data, error } = state.userStore;
   return {
     error,
@@ -86,7 +94,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   clearUserError: () => dispatch(clearUserError()),
 });
 

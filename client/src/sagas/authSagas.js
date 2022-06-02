@@ -3,7 +3,7 @@ import ACTION from '../actions/actionTypes';
 import history from '../browserHistory';
 import * as restController from '../api/rest/restController';
 
-export function* loginSaga(action) {
+export function * loginSaga (action) {
   yield put({ type: ACTION.AUTH_ACTION_REQUEST });
   try {
     yield restController.loginRequest(action.data);
@@ -14,7 +14,7 @@ export function* loginSaga(action) {
   }
 }
 
-export function* registerSaga(action) {
+export function * registerSaga (action) {
   yield put({ type: ACTION.AUTH_ACTION_REQUEST });
   try {
     yield restController.registerRequest(action.data);
