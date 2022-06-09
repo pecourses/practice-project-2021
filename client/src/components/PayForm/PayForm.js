@@ -1,7 +1,7 @@
 import React from 'react';
-import Cards from 'react-credit-cards';
+import Cards from '@snowpak/react-credit-cards';
 import { Form, Formik } from 'formik';
-import 'react-credit-cards/es/styles-compiled.css';
+import '@snowpak/react-credit-cards/es/styles-compiled.css';
 import { connect } from 'react-redux';
 import styles from './PayForm.module.sass';
 import { changeFocusOnCard } from '../../actions/actionCreator';
