@@ -1,4 +1,4 @@
-FROM node:14.16.1-alpine3.13
+FROM node:16.15.1-alpine3.16
 
 ARG NODE_ENV="development"
 
@@ -13,5 +13,7 @@ COPY . .
 EXPOSE 5000
 
 RUN npm install
+
+RUN chown -R node:node /client/node_modules
 
 CMD npm start
