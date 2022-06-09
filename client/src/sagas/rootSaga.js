@@ -1,6 +1,5 @@
 import { takeLatest, takeLeading, takeEvery } from 'redux-saga/effects';
 import ACTION from '../actions/actionTypes';
-import { registerSaga, loginSaga } from './authSagas';
 import {
   privateSaga,
   updateUserData,
@@ -32,8 +31,6 @@ import {
 } from './chatSagas';
 
 function * rootSaga () {
-  yield takeLatest(ACTION.AUTH_ACTION_REGISTER, registerSaga);
-  yield takeLatest(ACTION.AUTH_ACTION_LOGIN, loginSaga);
   yield takeLatest(ACTION.PAYMENT_ACTION, paymentSaga);
   yield takeEvery(ACTION.GET_USER_ACTION, privateSaga);
   yield takeEvery(ACTION.GET_DATA_FOR_CONTEST_ACTION, dataForContestSaga);

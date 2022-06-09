@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import Logo from '../../components/Logo';
 import styles from './LoginPage.module.sass';
-import { clearErrorSignUpAndLogin } from '../../actions/actionCreator';
+import { clearAuthError } from '../../app/slices/authSlice';
 import CONSTANTS from '../../constants';
 
 const LoginPage = props => (
@@ -26,7 +26,7 @@ const LoginPage = props => (
 );
 
 const mapDispatchToProps = dispatch => ({
-  clearError: () => dispatch(clearErrorSignUpAndLogin()),
+  clearError: () => dispatch(clearAuthError()),
 });
 
 export default connect(null, mapDispatchToProps)(LoginPage);

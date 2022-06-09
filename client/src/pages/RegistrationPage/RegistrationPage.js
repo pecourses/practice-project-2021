@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Logo from '../../components/Logo';
 import RegistrationForm from '../../components/RegistrationForm/RegistrationForm';
 import styles from './RegistrationPage.module.sass';
-import { clearErrorSignUpAndLogin } from '../../actions/actionCreator';
+import { clearAuthError } from '../../app/slices/authSlice';
 import CONSTANTS from '../../constants';
 
 const RegistrationPage = props => {
@@ -120,7 +120,7 @@ const RegistrationPage = props => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  clearError: () => dispatch(clearErrorSignUpAndLogin()),
+  clearError: () => dispatch(clearAuthError()),
 });
 
 export default connect(null, mapDispatchToProps)(RegistrationPage);

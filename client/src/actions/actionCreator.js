@@ -1,25 +1,9 @@
 import ACTION from './actionTypes';
 
-export const authActionLogin = (data, history) => ({
-  type: ACTION.AUTH_ACTION_LOGIN,
-  data,
-  history,
-});
-
-export const authActionRegister = (data, history) => ({
-  type: ACTION.AUTH_ACTION_REGISTER,
-  data,
-  history,
-});
-
 export const payRequest = (data, history) => ({
   type: ACTION.PAYMENT_ACTION,
   data,
   history,
-});
-
-export const clearErrorSignUpAndLogin = () => ({
-  type: ACTION.AUTH_ACTION_CLEAR_ERROR,
 });
 
 export const clearUserStore = () => ({
@@ -127,10 +111,6 @@ export const onlyForNotAuthorize = data => ({
 
 export const headerRequest = () => ({
   type: ACTION.HEADER_REQUEST_AUTHORIZE,
-});
-
-export const clearAuth = () => ({
-  type: ACTION.AUTH_ACTION_CLEAR,
 });
 
 export const getPreviewChat = () => ({

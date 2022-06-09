@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, Form, Formik } from 'formik';
 import Error from '../Error/Error';
-import { authActionRegister, clearAuth } from '../../actions/actionCreator';
+import { checkAuth, clearAuth } from '../../app/slices/authSlice';
 import styles from './RegistrationForm.module.sass';
 import FormInput from '../FormInput/FormInput';
 import RoleInput from '../RoleInput/RoleInput';
@@ -162,7 +162,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  register: ({ data, history }) => dispatch(authActionRegister(data, history)),
+  register: ({ data, history }) => {
+    console.log('CONSTANTS.AUTH_MODE.REGISTER', CONSTANTS.AUTH_MODE.REGISTER);
+    dispatch(
+      checkAuth({ data, history, authMode: CONSTANTS.AUTH_MODE.REGISTER })
+    );
+  },
   authClear: () => dispatch(clearAuth()),
 });
 
