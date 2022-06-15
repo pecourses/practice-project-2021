@@ -32,19 +32,6 @@ export function * updateContestSaga (action) {
   }
 }
 
-export function * dataForContestSaga (action) {
-  yield put({ type: ACTION.GET_DATA_FOR_CONTEST_ACTION_REQUEST });
-  try {
-    const { data } = yield restController.dataForContest(action.data);
-    yield put({ type: ACTION.GET_DATA_FOR_CONTEST_ACTION_SUCCESS, data });
-  } catch (e) {
-    yield put({
-      type: ACTION.GET_DATA_FOR_CONTEST_ACTION_ERROR,
-      error: e.response,
-    });
-  }
-}
-
 export function * getContestByIdSaga (action) {
   yield put({ type: ACTION.GET_CONTEST_BY_ID_REQUEST });
   try {

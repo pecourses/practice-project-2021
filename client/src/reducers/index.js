@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import authReducer from './../app/slices/authSlice';
 import getUserReducer from './userReducer';
-import dataForContestReducer from './dataForContestReducer';
+import dataForContestReducer from './../app/slices/dataForContestSlice';
 import payReducer from './payReducer';
 import getContestsReducer from './getContestsReducer';
 import storeContestReducer from './storeContestReducer';
