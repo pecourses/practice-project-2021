@@ -51,15 +51,6 @@ export const getContestById = data => ({
   data,
 });
 
-export const selectBundle = bundle => ({
-  type: ACTION.SELECT_BUNDLE_ACTION,
-  bundle,
-});
-
-export const clearBundle = () => ({
-  type: ACTION.CLEAR_BUNDLE_ACTION,
-});
-
 export const updateContest = data => ({
   type: ACTION.UPDATE_CONTEST_ACTION,
   data,

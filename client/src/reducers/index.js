@@ -5,7 +5,7 @@ import dataForContestReducer from './dataForContestReducer';
 import payReducer from './payReducer';
 import getContestsReducer from './getContestsReducer';
 import storeContestReducer from './storeContestReducer';
-import bundleReducer from './bundleReducer';
+import bundleReducer from './../app/slices/bundleSlice';
 import getContestByIdReducer from './getContestByIdReducer';
 import updateContestReducer from './updateContestReducer';
 import chatReducer from './chatReducer';

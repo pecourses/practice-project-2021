@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
-import { selectBundle } from '../../actions/actionCreator';
+import { updateBundle } from '../../app/slices/bundleSlice';
 import BundleBox from '../../components/BundleBox/BundleBox';
 import CONSTANTS from '../../constants';
 import styles from './StartContestPage.module.sass';
@@ -121,7 +121,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  choseBundle: bundle => dispatch(selectBundle(bundle)),
+  choseBundle: bundle => dispatch(updateBundle(bundle)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StartContestPage);
