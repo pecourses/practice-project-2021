@@ -11,7 +11,6 @@ import {
   activeContestsSaga,
   customerContestsSaga,
   updateContestSaga,
-  dataForContestSaga,
   getContestByIdSaga,
   downloadContestFileSaga,
 } from './contestsSagas';
@@ -33,7 +32,6 @@ import {
 function * rootSaga () {
   yield takeLatest(ACTION.PAYMENT_ACTION, paymentSaga);
   yield takeEvery(ACTION.GET_USER_ACTION, privateSaga);
-  yield takeEvery(ACTION.GET_DATA_FOR_CONTEST_ACTION, dataForContestSaga);
   yield takeLatest(ACTION.CASHOUT_ACTION, cashoutSaga);
   yield takeLeading(ACTION.GET_CONTESTS_FOR_CUSTOMER, customerContestsSaga);
   yield takeLatest(ACTION.GET_CONTEST_BY_ID_ACTION, getContestByIdSaga);
