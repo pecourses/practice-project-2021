@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import styles from './ContestCreationPage.module.sass';
-import { saveContestToStore } from '../../actions/actionCreator';
+import { saveContestToStore } from './../../app/slices/storeContestSlice';
 import NextButton from '../../components/NextButton/NextButton';
 import ContestForm from '../../components/ContestForm/ContestForm';
 import BackButton from '../../components/BackButton/BackButton';

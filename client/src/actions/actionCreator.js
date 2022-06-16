@@ -1,11 +1,5 @@
 import ACTION from './actionTypes';
 
-export const payRequest = (data, history) => ({
-  type: ACTION.PAYMENT_ACTION,
-  data,
-  history,
-});
-
 export const clearUserStore = () => ({
   type: ACTION.CLEAR_USER_STORE,
 });
@@ -44,11 +38,6 @@ export const getContestById = data => ({
 
 export const updateContest = data => ({
   type: ACTION.UPDATE_CONTEST_ACTION,
-  data,
-});
-
-export const saveContestToStore = data => ({
-  type: ACTION.SAVE_CONTEST_TO_STORE,
   data,
 });
 
@@ -220,11 +209,6 @@ export const changeShowImage = data => ({
   data,
 });
 
-export const changeFocusOnCard = data => ({
-  type: ACTION.CHANGE_FOCUS_ON_CARD,
-  data,
-});
-
 export const changeProfileModeView = data => ({
   type: ACTION.CHANGE_PROFILE_MODE_VIEW,
   data,
@@ -233,10 +217,6 @@ export const changeProfileModeView = data => ({
 export const changeEditModeOnUserProfile = data => ({
   type: ACTION.CHANGE_EDIT_MODE_ON_USER_PROFILE,
   data,
-});
-
-export const clearPaymentStore = () => ({
-  type: ACTION.CLEAR_PAYMENT_STORE,
 });
 
 export const clearUpdateContestStore = () => ({

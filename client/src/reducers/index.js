@@ -2,9 +2,9 @@ import { combineReducers } from 'redux';
 import authReducer from './../app/slices/authSlice';
 import getUserReducer from './userReducer';
 import dataForContestReducer from './../app/slices/dataForContestSlice';
-import payReducer from './payReducer';
+import paymentPeducer from './../app/slices/paymentSlice';
 import getContestsReducer from './getContestsReducer';
-import storeContestReducer from './storeContestReducer';
+import storeContestReducer from './../app/slices/storeContestSlice';
 import bundleReducer from './../app/slices/bundleSlice';
 import getContestByIdReducer from './getContestByIdReducer';
 import updateContestReducer from './updateContestReducer';
@@ -15,7 +15,7 @@ const appReducer = combineReducers({
   userStore: getUserReducer,
   auth: authReducer,
   dataForContest: dataForContestReducer,
-  payment: payReducer,
+  payment: paymentPeducer,
   contestByIdStore: getContestByIdReducer,
   contestsList: getContestsReducer,
   contestStore: storeContestReducer,

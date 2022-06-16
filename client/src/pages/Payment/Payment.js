@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import { payRequest, clearPaymentStore } from '../../actions/actionCreator';
+import { payRequest, clearPaymentStore } from './../../app/slices/paymentSlice';
 import PayForm from '../../components/PayForm/PayForm';
 import styles from './Payment.module.sass';
 import CONSTANTS from '../../constants';
@@ -11,7 +11,9 @@ const Payment = props => {
   const pay = values => {
     const { contests } = props.contestStore;
     const contestArray = [];
-    Object.keys(contests).forEach(key => contestArray.push(contests[key]));
+    Object.keys(contests).forEach(key =>
+      contestArray.push({ ...contests[key] })
+    );
     const { number, expiry, cvc } = values;
     const data = new FormData();
     for (let i = 0; i < contestArray.length; i++) {
@@ -84,7 +86,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  pay: ({ data, history }) => dispatch(payRequest(data, history)),
+  pay: ({ data, history }) => dispatch(payRequest({ data, history })),
   clearPaymentStore: () => dispatch(clearPaymentStore()),
 });
 

@@ -6,7 +6,7 @@ import {
   notAuthorizeSaga,
   headerRequest,
 } from './userSaga';
-import { paymentSaga, cashoutSaga } from './paymentSaga';
+import { cashoutSaga } from './paymentSaga';
 import {
   activeContestsSaga,
   customerContestsSaga,
@@ -30,7 +30,6 @@ import {
 } from './chatSagas';
 
 function * rootSaga () {
-  yield takeLatest(ACTION.PAYMENT_ACTION, paymentSaga);
   yield takeEvery(ACTION.GET_USER_ACTION, privateSaga);
   yield takeLatest(ACTION.CASHOUT_ACTION, cashoutSaga);
   yield takeLeading(ACTION.GET_CONTESTS_FOR_CUSTOMER, customerContestsSaga);

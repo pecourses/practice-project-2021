@@ -8,9 +8,9 @@ import UserInfo from '../../components/UserInfo/UserInfo';
 import PayForm from '../../components/PayForm/PayForm';
 import {
   cashOut,
-  changeProfileModeView,
-  clearPaymentStore,
+  changeProfileModeView
 } from '../../actions/actionCreator';
+import {clearPaymentStore} from './../../app/slices/paymentSlice'
 import Error from '../../components/Error/Error';
 
 const UserProfile = props => {
