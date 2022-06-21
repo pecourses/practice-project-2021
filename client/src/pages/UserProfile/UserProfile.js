@@ -6,11 +6,9 @@ import styles from './UserProfile.module.sass';
 import CONSTANTS from '../../constants';
 import UserInfo from '../../components/UserInfo/UserInfo';
 import PayForm from '../../components/PayForm/PayForm';
-import {
-  cashOut,
-  changeProfileModeView
-} from '../../actions/actionCreator';
-import {clearPaymentStore} from './../../app/slices/paymentSlice'
+import { cashOut } from '../../actions/actionCreator';
+import { changeProfileViewMode } from './../../app/slices/userProfileSlice';
+import { clearPaymentStore } from './../../app/slices/paymentSlice';
 import Error from '../../components/Error/Error';
 
 const UserProfile = props => {
@@ -28,7 +26,7 @@ const UserProfile = props => {
     balance,
     role,
     profileModeView,
-    changeProfileModeView,
+    changeProfileViewMode,
     error,
     clearPaymentStore,
   } = props;
@@ -44,7 +42,7 @@ const UserProfile = props => {
                 [styles.currentOption]:
                   profileModeView === CONSTANTS.USER_INFO_MODE,
               })}
-              onClick={() => changeProfileModeView(CONSTANTS.USER_INFO_MODE)}
+              onClick={() => changeProfileViewMode(CONSTANTS.USER_INFO_MODE)}
             >
               UserInfo
             </div>
@@ -54,7 +52,7 @@ const UserProfile = props => {
                   [styles.currentOption]:
                     profileModeView === CONSTANTS.CASHOUT_MODE,
                 })}
-                onClick={() => changeProfileModeView(CONSTANTS.CASHOUT_MODE)}
+                onClick={() => changeProfileViewMode(CONSTANTS.CASHOUT_MODE)}
               >
                 Cashout
               </div>
@@ -102,7 +100,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   cashOut: data => dispatch(cashOut(data)),
-  changeProfileModeView: data => dispatch(changeProfileModeView(data)),
+  changeProfileViewMode: data => dispatch(changeProfileViewMode(data)),
   clearPaymentStore: () => dispatch(clearPaymentStore()),
 });
 

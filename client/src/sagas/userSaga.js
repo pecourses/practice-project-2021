@@ -21,7 +21,13 @@ export function * notAuthorizeSaga (action) {
     action.replace('/');
     yield put({ type: ACTION.GET_USER_SUCCESS, data });
   } catch (e) {
-    yield put({ type: ACTION.GET_USER_ERROR, error: e });
+    console.log('e');
+    console.dir(e);
+    yield put({
+      type: ACTION.GET_USER_ERROR,
+      error: { data: e.response.data, status: e.response.status },
+    });
+    // yield put({ type: ACTION.GET_USER_ERROR, error: e });
   }
 }
 

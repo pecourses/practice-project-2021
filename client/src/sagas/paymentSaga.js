@@ -1,9 +1,9 @@
 import { put } from 'redux-saga/effects';
 import ACTION from '../actions/actionTypes';
-import history from '../browserHistory';
 import CONSTANTS from '../constants';
 import * as restController from '../api/rest/restController';
 
+/************************* */
 export function * cashoutSaga (action) {
   yield put({ type: ACTION.PAYMENT_ACTION_REQUEST, data: action.data });
   try {
@@ -18,3 +18,4 @@ export function * cashoutSaga (action) {
     yield put({ type: ACTION.PAYMENT_ACTION_ERROR, error: e.response });
   }
 }
+/***************************************** */

@@ -209,15 +209,15 @@ export const changeShowImage = data => ({
   data,
 });
 
-export const changeProfileModeView = data => ({
-  type: ACTION.CHANGE_PROFILE_MODE_VIEW,
-  data,
-});
+// export const changeProfileViewMode = data => ({
+//   type: ACTION.CHANGE_PROFILE_MODE_VIEW,
+//   data,
+// });
 
-export const changeEditModeOnUserProfile = data => ({
-  type: ACTION.CHANGE_EDIT_MODE_ON_USER_PROFILE,
-  data,
-});
+// export const changeEditModeOnUserProfile = data => ({
+//   type: ACTION.CHANGE_EDIT_MODE_ON_USER_PROFILE,
+//   data,
+// });
 
 export const clearUpdateContestStore = () => ({
   type: ACTION.CLEAR_UPDATE_CONTEST_STORE,

@@ -9,7 +9,7 @@ import bundleReducer from './../app/slices/bundleSlice';
 import getContestByIdReducer from './getContestByIdReducer';
 import updateContestReducer from './updateContestReducer';
 import chatReducer from './chatReducer';
-import userProfileReducer from './userProfileReducer';
+import userProfileReducer from './../app/slices/userProfileSlice';
 
 const appReducer = combineReducers({
   userStore: getUserReducer,

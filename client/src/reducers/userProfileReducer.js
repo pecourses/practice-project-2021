@@ -8,18 +8,18 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case ACTION.CHANGE_PROFILE_MODE_VIEW: {
-      return {
-        ...state,
-        profileModeView: action.data,
-      };
-    }
-    case ACTION.CHANGE_EDIT_MODE_ON_USER_PROFILE: {
-      return {
-        ...state,
-        isEdit: action.data,
-      };
-    }
+    // case ACTION.CHANGE_PROFILE_MODE_VIEW: {
+    //   return {
+    //     ...state,
+    //     profileModeView: action.data,
+    //   };
+    // }
+    // case ACTION.CHANGE_EDIT_MODE_ON_USER_PROFILE: {
+    //   return {
+    //     ...state,
+    //     isEdit: action.data,
+    //   };
+    // }
     default:
       return state;
   }
