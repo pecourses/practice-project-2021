@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import { payRequest, clearPaymentStore } from './../../app/slices/paymentSlice';
+import { pay, clearPaymentStore } from './../../app/slices/paymentSlice';
 import PayForm from '../../components/PayForm/PayForm';
 import styles from './Payment.module.sass';
 import CONSTANTS from '../../constants';
@@ -86,7 +86,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  pay: ({ data, history }) => dispatch(payRequest({ data, history })),
+  pay: ({ data, history }) => dispatch(pay({ data, history })),
   clearPaymentStore: () => dispatch(clearPaymentStore()),
 });
 

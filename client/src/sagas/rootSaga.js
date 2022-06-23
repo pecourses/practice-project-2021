@@ -1,13 +1,6 @@
 import { takeLatest, takeLeading, takeEvery } from 'redux-saga/effects';
 import ACTION from '../actions/actionTypes';
 import {
-  privateSaga,
-  updateUserData,
-  notAuthorizeSaga,
-  headerRequest,
-} from './userSaga';
-import { cashoutSaga } from './paymentSaga';
-import {
   activeContestsSaga,
   customerContestsSaga,
   updateContestSaga,
@@ -30,8 +23,6 @@ import {
 } from './chatSagas';
 
 function * rootSaga () {
-  yield takeEvery(ACTION.GET_USER_ACTION, privateSaga);
-  yield takeLatest(ACTION.CASHOUT_ACTION, cashoutSaga);
   yield takeLeading(ACTION.GET_CONTESTS_FOR_CUSTOMER, customerContestsSaga);
   yield takeLatest(ACTION.GET_CONTEST_BY_ID_ACTION, getContestByIdSaga);
   yield takeEvery(ACTION.GET_CONTESTS_FOR_CREATIVE, activeContestsSaga);
@@ -43,9 +34,6 @@ function * rootSaga () {
   yield takeEvery(ACTION.SET_OFFER_ACTION, addOfferSaga);
   yield takeLatest(ACTION.SET_OFFER_STATUS_ACTION, setOfferStatusSaga);
   yield takeLatest(ACTION.CHANGE_MARK_ACTION, changeMarkSaga);
-  yield takeLatest(ACTION.UPDATE_USER_DATA, updateUserData);
-  yield takeLatest(ACTION.ONLY_FOR_NOT_AUTHORIZE_USERS, notAuthorizeSaga);
-  yield takeLatest(ACTION.HEADER_REQUEST_AUTHORIZE, headerRequest);
   yield takeLatest(ACTION.GET_PREVIEW_CHAT_ASYNC, previewSaga);
   yield takeLatest(ACTION.GET_DIALOG_MESSAGES_ASYNC, getDialog);
   yield takeLatest(ACTION.SEND_MESSAGE_ACTION, sendMessage);

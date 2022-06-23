@@ -1,9 +1,5 @@
 import ACTION from './actionTypes';
 
-export const clearUserStore = () => ({
-  type: ACTION.CLEAR_USER_STORE,
-});
-
 export const clearAddOfferError = () => ({
   type: ACTION.CLEAR_ADD_OFFER_ERROR,
 });
@@ -14,11 +10,6 @@ export const clearChangeMarkError = () => ({
 
 export const clearSetOfferStatusError = () => ({
   type: ACTION.CLEAR_SET_OFFER_STATUS_ERROR,
-});
-
-export const getUserAction = data => ({
-  type: ACTION.GET_USER_ACTION,
-  replace: data,
 });
 
 export const getContestsForCreative = data => ({
@@ -61,27 +52,8 @@ export const createCatalog = data => ({
   data,
 });
 
-export const updateUserData = data => ({
-  type: ACTION.UPDATE_USER_DATA,
-  data,
-});
-
-export const cashOut = data => ({
-  type: ACTION.CASHOUT_ACTION,
-  data,
-});
-
 export const clearContestList = () => ({
   type: ACTION.CLEAR_CONTESTS_LIST,
-});
-
-export const onlyForNotAuthorize = data => ({
-  type: ACTION.ONLY_FOR_NOT_AUTHORIZE_USERS,
-  replace: data,
-});
-
-export const headerRequest = () => ({
-  type: ACTION.HEADER_REQUEST_AUTHORIZE,
 });
 
 export const getPreviewChat = () => ({
@@ -209,22 +181,8 @@ export const changeShowImage = data => ({
   data,
 });
 
-// export const changeProfileViewMode = data => ({
-//   type: ACTION.CHANGE_PROFILE_MODE_VIEW,
-//   data,
-// });
-
-// export const changeEditModeOnUserProfile = data => ({
-//   type: ACTION.CHANGE_EDIT_MODE_ON_USER_PROFILE,
-//   data,
-// });
-
 export const clearUpdateContestStore = () => ({
   type: ACTION.CLEAR_UPDATE_CONTEST_STORE,
-});
-
-export const clearUserError = () => ({
-  type: ACTION.CLEAR_USER_ERROR,
 });
 
 export const clearChatError = () => ({

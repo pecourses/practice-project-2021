@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { onlyForNotAuthorize } from '../../actions/actionCreator';
+import { onlyForNotAuthorize } from '../../app/slices/userSlice';
 import Spinner from '../Spinner/Spinner';
 
 const OnlyNotAuthorizedUserHoc = Component => {

@@ -6,7 +6,7 @@ import styles from './UserProfile.module.sass';
 import CONSTANTS from '../../constants';
 import UserInfo from '../../components/UserInfo/UserInfo';
 import PayForm from '../../components/PayForm/PayForm';
-import { cashOut } from '../../actions/actionCreator';
+import { cashOut } from './../../app/slices/paymentSlice';
 import { changeProfileViewMode } from './../../app/slices/userProfileSlice';
 import { clearPaymentStore } from './../../app/slices/paymentSlice';
 import Error from '../../components/Error/Error';
@@ -25,7 +25,7 @@ const UserProfile = props => {
   const {
     balance,
     role,
-    profileModeView,
+    profileViewMode,
     changeProfileViewMode,
     error,
     clearPaymentStore,
@@ -40,7 +40,7 @@ const UserProfile = props => {
             <div
               className={classNames(styles.optionContainer, {
                 [styles.currentOption]:
-                  profileModeView === CONSTANTS.USER_INFO_MODE,
+                  profileViewMode === CONSTANTS.USER_INFO_MODE,
               })}
               onClick={() => changeProfileViewMode(CONSTANTS.USER_INFO_MODE)}
             >
@@ -50,7 +50,7 @@ const UserProfile = props => {
               <div
                 className={classNames(styles.optionContainer, {
                   [styles.currentOption]:
-                    profileModeView === CONSTANTS.CASHOUT_MODE,
+                    profileViewMode === CONSTANTS.CASHOUT_MODE,
                 })}
                 onClick={() => changeProfileViewMode(CONSTANTS.CASHOUT_MODE)}
               >
@@ -59,7 +59,7 @@ const UserProfile = props => {
             )}
           </div>
         </div>
-        {profileModeView === CONSTANTS.USER_INFO_MODE ? (
+        {profileViewMode === CONSTANTS.USER_INFO_MODE ? (
           <UserInfo />
         ) : (
           <div className={styles.container}>
@@ -88,12 +88,12 @@ const UserProfile = props => {
 
 const mapStateToProps = state => {
   const { balance, role } = state.userStore.data;
-  const { profileModeView } = state.userProfile;
+  const { profileViewMode } = state.userProfile;
   const { error } = state.payment;
   return {
     balance,
     role,
-    profileModeView,
+    profileViewMode,
     error,
   };
 };

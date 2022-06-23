@@ -3,11 +3,8 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import styles from './Header.module.sass';
 import CONSTANTS from '../../constants';
-import {
-  getUserAction,
-  clearUserStore,
-  headerRequest,
-} from '../../actions/actionCreator';
+import { clearUserStore } from './../../app/slices/userSlice';
+import { getUser } from './../../app/slices/userSlice';
 
 class Header extends React.Component {
   componentDidMount () {
@@ -280,7 +277,7 @@ class Header extends React.Component {
 
 const mapStateToProps = state => state.userStore;
 const mapDispatchToProps = dispatch => ({
-  getUser: () => dispatch(headerRequest()),
+  getUser: () => dispatch(getUser()),
   clearUserStore: () => dispatch(clearUserStore()),
 });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import UpdateUserInfoForm from '../UpdateUserInfoForm/UpdateUserInfoForm';
-import { updateUserData } from '../../actions/actionCreator';
+import { updateUser } from '../../app/slices/userSlice';
 import { changeEditModeOnUserProfile } from './../../app/slices/userProfileSlice';
 import CONSTANTS from '../../constants';
 import styles from './UserInfo.module.sass';
@@ -88,7 +88,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  updateUser: data => dispatch(updateUserData(data)),
+  updateUser: data => dispatch(updateUser(data)),
   changeEditMode: data => dispatch(changeEditModeOnUserProfile(data)),
 });
 
