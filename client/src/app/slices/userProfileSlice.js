@@ -23,7 +23,7 @@ const userProfileSlice = createSlice({
   reducers,
 });
 
-const { reducer, actions } = userProfileSlice;
+const { actions, reducer } = userProfileSlice;
 
 export const { changeProfileViewMode, changeEditModeOnUserProfile } = actions;
 

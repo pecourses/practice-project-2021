@@ -27,9 +27,7 @@ const reducers = {
   clearAuthError: state => {
     state.error = null;
   },
-  clearAuth: state => {
-    state = { ...initialState };
-  },
+  clearAuth: () => initialState,
 };
 
 const extraReducers = builder => {

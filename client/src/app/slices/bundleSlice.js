@@ -10,9 +10,7 @@ const reducers = {
   updateBundle: (state, { payload }) => {
     state.bundle = payload;
   },
-  clearBundle: state => {
-    state = { ...initialState };
-  },
+  clearBundle: state => () => initialState,
 };
 
 const bundleSlice = createSlice({

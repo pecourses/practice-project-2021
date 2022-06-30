@@ -93,7 +93,7 @@ const userSlice = createSlice({
   extraReducers,
 });
 
-const { reducer, actions } = userSlice;
+const { actions, reducer } = userSlice;
 
 export const { clearUserStore, clearUserError } = actions;
 

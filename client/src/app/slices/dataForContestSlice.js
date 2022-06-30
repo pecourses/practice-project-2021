@@ -22,9 +22,7 @@ const initialState = {
 };
 
 const reducers = {
-  clearPreference: state => {
-    state = { ...initialState };
-  },
+  clearPreference: state => () => initialState,
 };
 
 const extraReducers = builder => {
