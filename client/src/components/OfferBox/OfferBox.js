@@ -5,13 +5,13 @@ import { withRouter } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import classNames from 'classnames';
 import { confirmAlert } from 'react-confirm-alert';
+import { goToExpandedDialog } from '../../actions/actionCreator';
 import {
   changeMark,
   clearChangeMarkError,
-  goToExpandedDialog,
   changeShowImage,
-  changeModalShow,
-} from '../../actions/actionCreator';
+  changeShowModal,
+} from '../../app/slices/getContestByIdSlice';
 import CONSTANTS from '../../constants';
 import styles from './OfferBox.module.sass';
 import 'react-confirm-alert/src/react-confirm-alert.css';

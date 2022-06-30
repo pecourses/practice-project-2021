@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import {
-  getContestsForCustomer,
-  clearContestList,
+  getContests,
+  clearContestsList,
   setNewCustomerFilter,
-} from '../../actions/actionCreator';
+} from '../../app/slices/getContestsSlice';
 import CONSTANTS from '../../constants';
 import ContestsContainer from '../ContestsContainer/ContestsContainer';
 import ContestBox from '../ContestBox/ContestBox';
@@ -134,8 +134,9 @@ class CustomerDashboard extends React.Component {
 const mapStateToProps = state => state.contestsList;
 
 const mapDispatchToProps = dispatch => ({
-  getContests: data => dispatch(getContestsForCustomer(data)),
-  clearContestsList: () => dispatch(clearContestList()),
+  getContests: data =>
+    dispatch(getContests({ requestData: data, role: CONSTANTS.CUSTOMER })),
+  clearContestsList: () => dispatch(clearContestsList()),
   newFilter: filter => dispatch(setNewCustomerFilter(filter)),
 });
 

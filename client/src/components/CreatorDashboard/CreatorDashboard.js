@@ -5,15 +5,16 @@ import queryString from 'query-string';
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
 import {
-  getContestsForCreative,
-  clearContestList,
+  getContests,
+  clearContestsList,
   setNewCreatorFilter,
-} from '../../actions/actionCreator';
+} from '../../app/slices/getContestsSlice';
 import { getDataForContest } from './../../app/slices/dataForContestSlice';
 import ContestsContainer from '../ContestsContainer/ContestsContainer';
 import ContestBox from '../ContestBox/ContestBox';
 import styles from './CreatorDashboard.module.sass';
 import TryAgain from '../TryAgain/TryAgain';
+import CONSTANTS from '../../constants';
 
 const types = [
   '',
@@ -285,8 +286,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  getContests: data => dispatch(getContestsForCreative(data)),
-  clearContestsList: () => dispatch(clearContestList()),
+  getContests: data =>
+    dispatch(getContests({ requestData: data, role: CONSTANTS.CREATOR })),
+  clearContestsList: () => dispatch(clearContestsList()),
   newFilter: filter => dispatch(setNewCreatorFilter(filter)),
   getDataForContest: () => dispatch(getDataForContest()),
 });

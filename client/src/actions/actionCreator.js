@@ -1,59 +1,8 @@
 import ACTION from './actionTypes';
 
-export const clearAddOfferError = () => ({
-  type: ACTION.CLEAR_ADD_OFFER_ERROR,
-});
-
-export const clearChangeMarkError = () => ({
-  type: ACTION.CLEAR_CHANGE_MARK_ERROR,
-});
-
-export const clearSetOfferStatusError = () => ({
-  type: ACTION.CLEAR_SET_OFFER_STATUS_ERROR,
-});
-
-export const getContestsForCreative = data => ({
-  type: ACTION.GET_CONTESTS_FOR_CREATIVE,
-  data,
-});
-
-export const getContestsForCustomer = data => ({
-  type: ACTION.GET_CONTESTS_FOR_CUSTOMER,
-  data,
-});
-
-export const getContestById = data => ({
-  type: ACTION.GET_CONTEST_BY_ID_ACTION,
-  data,
-});
-
-export const updateContest = data => ({
-  type: ACTION.UPDATE_CONTEST_ACTION,
-  data,
-});
-
-export const changeMark = data => ({
-  type: ACTION.CHANGE_MARK_ACTION,
-  data,
-});
-
-export const setOffer = data => ({
-  type: ACTION.SET_OFFER_ACTION,
-  data,
-});
-
-export const setOfferStatus = data => ({
-  type: ACTION.SET_OFFER_STATUS_ACTION,
-  data,
-});
-
 export const createCatalog = data => ({
   type: ACTION.CREATE_CATALOG_REQUEST,
   data,
-});
-
-export const clearContestList = () => ({
-  type: ACTION.CLEAR_CONTESTS_LIST,
 });
 
 export const getPreviewChat = () => ({
@@ -90,16 +39,6 @@ export const clearMessageList = () => ({
 
 export const changeChatShow = () => ({
   type: ACTION.CHANGE_CHAT_SHOW,
-});
-
-export const setNewCustomerFilter = filter => ({
-  type: ACTION.SET_NEW_CUSTOMER_FILTER,
-  filter,
-});
-
-export const setNewCreatorFilter = filter => ({
-  type: ACTION.SET_NEW_CREATOR_FILTER,
-  filter,
 });
 
 export const setPreviewChatMode = mode => ({
@@ -166,30 +105,6 @@ export const changeCatalogName = data => ({
   data,
 });
 
-export const changeEditContest = data => ({
-  type: ACTION.CHANGE_EDIT_CONTEST,
-  data,
-});
-
-export const changeContestViewMode = data => ({
-  type: ACTION.CHANGE_CONTEST_VIEW_MODE,
-  data,
-});
-
-export const changeShowImage = data => ({
-  type: ACTION.CHANGE_SHOW_IMAGE,
-  data,
-});
-
-export const clearUpdateContestStore = () => ({
-  type: ACTION.CLEAR_UPDATE_CONTEST_STORE,
-});
-
 export const clearChatError = () => ({
   type: ACTION.CLEAR_CHAT_ERROR,
-});
-
-export const changeModalShow = data => ({
-  type: ACTION.CHANGE_SHOW_MODAL,
-  data,
 });

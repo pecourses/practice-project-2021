@@ -3,11 +3,11 @@ import authReducer from './../app/slices/authSlice';
 import getUserReducer from './../app/slices/userSlice';
 import dataForContestReducer from './../app/slices/dataForContestSlice';
 import paymentPeducer from './../app/slices/paymentSlice';
-import getContestsReducer from './getContestsReducer';
+import getContestsReducer from './../app/slices/getContestsSlice';
 import storeContestReducer from './../app/slices/storeContestSlice';
 import bundleReducer from './../app/slices/bundleSlice';
-import getContestByIdReducer from './getContestByIdReducer';
-import updateContestReducer from './updateContestReducer';
+import getContestByIdReducer from './../app/slices/getContestByIdSlice';
+import updateContestReducer from './../app/slices/updateContestSlice';
 import chatReducer from './chatReducer';
 import userProfileReducer from './../app/slices/userProfileSlice';
 

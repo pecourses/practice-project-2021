@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
 import LightBox from 'react-image-lightbox';
+import { goToExpandedDialog } from '../../actions/actionCreator';
 import {
   getContestById,
   setOfferStatus,
   clearSetOfferStatusError,
-  goToExpandedDialog,
   changeEditContest,
   changeContestViewMode,
   changeShowImage,
-} from '../../actions/actionCreator';
+} from '../../app/slices/getContestByIdSlice';
 import Header from '../../components/Header/Header';
 import ContestSideBar from '../../components/ContestSideBar/ContestSideBar';
 import styles from './ContestPage.module.sass';
