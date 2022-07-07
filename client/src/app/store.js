@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
-import rootReducer from '../reducers/index';
+import rootReducer from './reducer';
 import rootSaga from '../sagas/rootSaga';
 import { initSocket } from '../api/ws/socketController';
 

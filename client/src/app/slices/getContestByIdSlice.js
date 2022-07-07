@@ -59,6 +59,18 @@ export const changeMark = createAsyncThunk(
   }
 );
 
+export const downloadContestFile = createAsyncThunk(
+  `${GET_CONTEST_BY_ID_SLICE_NAME}/downloadContestFile`,
+  async (payload, { rejectWithValue }) => {
+    try {
+      const { data } = await restController.downloadContestFile(payload);
+      return data;
+    } catch (err) {
+      rejectWithValue(err.response.data);
+    }
+  }
+);
+
 const initialState = {
   isFetching: true,
   contestData: null,
