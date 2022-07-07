@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import classNames from 'classnames';
 import { confirmAlert } from 'react-confirm-alert';
-import { goToExpandedDialog } from '../../actions/actionCreator';
+import { goToExpandedDialog } from './../../app/slices/chatSlice';
 import {
   changeMark,
   clearChangeMarkError,

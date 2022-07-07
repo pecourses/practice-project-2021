@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
 import LightBox from 'react-image-lightbox';
-import { goToExpandedDialog } from '../../actions/actionCreator';
+import { goToExpandedDialog } from './../../app/slices/chatSlice';
 import {
   getContestById,
   setOfferStatus,

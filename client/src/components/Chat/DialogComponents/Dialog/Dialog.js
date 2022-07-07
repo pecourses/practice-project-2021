@@ -5,7 +5,7 @@ import className from 'classnames';
 import {
   getDialogMessages,
   clearMessageList,
-} from '../../../../actions/actionCreator';
+} from './../../../../app/slices/chatSlice';
 import ChatHeader from '../../ChatComponents/ChatHeader/ChatHeader';
 import styles from './Dialog.module.sass';
 import ChatInput from '../../ChatComponents/ChatInut/ChatInput';

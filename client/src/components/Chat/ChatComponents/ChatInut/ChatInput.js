@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
-import { sendMessageAction } from '../../../../actions/actionCreator';
+import { sendMessage } from './../../../../app/slices/chatSlice';
 import styles from './ChatInput.module.sass';
 import CONSTANTS from '../../../../constants';
 import FormInput from '../../../FormInput/FormInput';
@@ -54,7 +54,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  sendMessage: data => dispatch(sendMessageAction(data)),
+  sendMessage: data => dispatch(sendMessage(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatInput);

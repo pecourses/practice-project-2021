@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getPreviewChat } from '../../../../actions/actionCreator';
+import { getPreviewChat } from './../../../../app/slices/chatSlice';
 import DialogList from '../DialogList/DialogList';
 
 class DialogListContainer extends React.Component {
