@@ -12,13 +12,9 @@ export const getContestById = createAsyncThunk(
       const { data } = await restController.getContestById(payload);
       const { Offers } = data;
       delete data.Offers;
-      console.log(' { contestData: data, offers: Offers }', {
-        contestData: data,
-        offers: Offers,
-      });
       return { contestData: data, offers: Offers };
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -30,7 +26,7 @@ export const addOffer = createAsyncThunk(
       const { data } = await restController.setNewOffer(payload);
       return data;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -42,7 +38,7 @@ export const setOfferStatus = createAsyncThunk(
       const { data } = await restController.setOfferStatus(payload);
       return data;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -54,7 +50,7 @@ export const changeMark = createAsyncThunk(
       const { data } = await restController.changeMark(payload);
       return { data, offerId: payload.offerId, mark: payload.mark };
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -66,7 +62,7 @@ export const downloadContestFile = createAsyncThunk(
       const { data } = await restController.downloadContestFile(payload);
       return data;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );

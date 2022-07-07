@@ -14,7 +14,7 @@ export const getContests = createAsyncThunk(
           : await restController.getActiveContests(requestData);
       return data;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );

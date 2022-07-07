@@ -6,9 +6,8 @@ import styles from './UserProfile.module.sass';
 import CONSTANTS from '../../constants';
 import UserInfo from '../../components/UserInfo/UserInfo';
 import PayForm from '../../components/PayForm/PayForm';
-import { cashOut } from './../../app/slices/paymentSlice';
+import { cashOut, clearPaymentStore } from './../../app/slices/paymentSlice';
 import { changeProfileViewMode } from './../../app/slices/userProfileSlice';
-import { clearPaymentStore } from './../../app/slices/paymentSlice';
 import Error from '../../components/Error/Error';
 
 const UserProfile = props => {

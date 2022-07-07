@@ -12,7 +12,7 @@ export const updateContest = createAsyncThunk(
       // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       dispatch(updateStoreAfterUpdateContest(data));
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );

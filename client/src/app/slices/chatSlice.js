@@ -13,7 +13,7 @@ export const getPreviewChat = createAsyncThunk(
       const { data } = await restController.getPreviewChat();
       return data;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -24,7 +24,7 @@ export const getDialogMessages = createAsyncThunk(
       const { data } = await restController.getDialog(payload);
       return data;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -36,7 +36,7 @@ export const sendMessage = createAsyncThunk(
       const { data } = await restController.newMessage(payload);
       return data;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -48,7 +48,7 @@ export const changeChatFavorite = createAsyncThunk(
       const { data } = await restController.changeChatFavorite(payload);
       return data;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -60,7 +60,7 @@ export const changeChatBlock = createAsyncThunk(
       const { data } = await restController.changeChatBlock(payload);
       return data;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -72,7 +72,7 @@ export const getCatalogList = createAsyncThunk(
       const { data } = await restController.getCatalogList(payload);
       return data;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -84,7 +84,7 @@ export const addChatToCatalog = createAsyncThunk(
       const { data } = await restController.addChatToCatalog(payload);
       return data;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -96,7 +96,7 @@ export const createCatalog = createAsyncThunk(
       const { data } = await restController.createCatalog(payload);
       return data;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -108,7 +108,7 @@ export const deleteCatalog = createAsyncThunk(
       await restController.deleteCatalog(payload);
       return payload;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -120,7 +120,7 @@ export const removeChatFromCatalog = createAsyncThunk(
       const { data } = await restController.removeChatFromCatalog(payload);
       return data;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -132,7 +132,7 @@ export const changeCatalogName = createAsyncThunk(
       const { data } = await restController.changeCatalogName(payload);
       return data;
     } catch (err) {
-      rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
