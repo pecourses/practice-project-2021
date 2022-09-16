@@ -34,6 +34,10 @@ export default {
     REGISTER: 'REGISTER',
     LOGIN: 'LOGIN',
   },
+  GET_USER_MODE: {
+    SUBSCRIBE_CHAT: 'SUBSCRIBE_CHAT',
+    REDIRECT_TO_HOME: 'REDIRECT_TO_HOME',
+  },
   HEADER_ANIMATION_TEXT: [
     'a Company',
     'a Brand',

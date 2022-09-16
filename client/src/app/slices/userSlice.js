@@ -2,6 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as restController from './../../api/rest/restController';
 import { controller } from '../../api/ws/socketController';
 import { changeEditModeOnUserProfile } from './userProfileSlice';
+import CONSTANTS from './../../constants';
+
+const { REDIRECT_TO_HOME } = CONSTANTS.GET_USER_MODE;
 
 const USER_SLICE_NAME = 'user';
 
@@ -13,29 +16,18 @@ const initialState = {
 
 export const getUser = createAsyncThunk(
   `${USER_SLICE_NAME}/getUser`,
-  async (payload, { rejectWithValue }) => {
+  async ({ getUserMode, replace }, { rejectWithValue }) => {
     try {
       const { data } = await restController.getUser();
+
       controller.subscribe(data.id);
+      if (getUserMode === REDIRECT_TO_HOME) {
+        replace('/');
+      }
+
       return data;
     } catch (err) {
       return rejectWithValue(err.response.data);
-    }
-  }
-);
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-export const onlyForNotAuthorize = createAsyncThunk(
-  `${USER_SLICE_NAME}/onlyForNotAuthorize`,
-  async ({ replace }, { rejectWithValue, dispatch }) => {
-    dispatch(getUser.pending());
-    try {
-      const { data } = await restController.getUser();
-      replace('/');
-      dispatch(getUser.fulfilled(data));
-      // return data;
-    } catch (err) {
-      dispatch(getUser.rejected(err.response.data));
-      // return rejectWithValue(err.response.data);
     }
   }
 );

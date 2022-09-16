@@ -1,15 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { onlyForNotAuthorize } from '../../app/slices/userSlice';
+import { getUser } from '../../app/slices/userSlice';
+import CONSTANTS from '../../constants';
 import Spinner from '../Spinner/Spinner';
 
+const { REDIRECT_TO_HOME } = CONSTANTS.GET_USER_MODE;
+
 const OnlyNotAuthorizedUserHoc = Component => {
-  const mapStateToProps = state => state.userStore;
-
-  const mapDispatchToProps = dispatch => ({
-    checkAuth: data => dispatch(onlyForNotAuthorize(data)),
-  });
-
   class HocForLoginSignUp extends React.Component {
     componentDidMount () {
       this.props.checkAuth(this.props.history.replace);
@@ -25,6 +22,13 @@ const OnlyNotAuthorizedUserHoc = Component => {
       return null;
     }
   }
+
+  const mapStateToProps = state => state.userStore;
+
+  const mapDispatchToProps = dispatch => ({
+    checkAuth: replace =>
+      dispatch(getUser({ getUserMode: REDIRECT_TO_HOME, replace })),
+  });
 
   return connect(mapStateToProps, mapDispatchToProps)(HocForLoginSignUp);
 };

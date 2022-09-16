@@ -6,6 +6,8 @@ import CONSTANTS from '../../constants';
 import { clearUserStore } from './../../app/slices/userSlice';
 import { getUser } from './../../app/slices/userSlice';
 
+const { SUBSCRIBE_CHAT } = CONSTANTS.GET_USER_MODE;
+
 class Header extends React.Component {
   componentDidMount () {
     if (!this.props.data) {
@@ -277,7 +279,7 @@ class Header extends React.Component {
 
 const mapStateToProps = state => state.userStore;
 const mapDispatchToProps = dispatch => ({
-  getUser: () => dispatch(getUser()),
+  getUser: () => dispatch(getUser({ getUserMode: SUBSCRIBE_CHAT })),
   clearUserStore: () => dispatch(clearUserStore()),
 });
 
