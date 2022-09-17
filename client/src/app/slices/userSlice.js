@@ -45,31 +45,25 @@ export const updateUser = createAsyncThunk(
 
 const reducers = {
   clearUserStore: state => {
-    console.log('clearUserStore');
     state.error = null;
     state.data = null;
   },
   clearUserError: state => {
-    console.log('clearUserError');
     state.error = null;
   },
 };
 
 const extraReducers = builder => {
   builder.addCase(getUser.pending, state => {
-    console.log('getUser.pending');
     state.isFetching = true;
     state.error = null;
     state.data = null;
   });
   builder.addCase(getUser.fulfilled, (state, { payload }) => {
-    console.log('getUser.fulfilled');
     state.isFetching = false;
     state.data = payload;
   });
   builder.addCase(getUser.rejected, (state, { payload }) => {
-    console.log('getUser.rejected');
-    console.log('payload', payload);
     state.isFetching = false;
     state.error = payload;
   });

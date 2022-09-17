@@ -52,7 +52,7 @@ const reducers = {
 };
 
 const extraReducers = builder => {
-  builder.addCase(getContests.pending, (state, { payload }) => {
+  builder.addCase(getContests.pending, state => {
     state.isFetching = true;
     state.error = null;
   });

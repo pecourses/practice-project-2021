@@ -25,8 +25,6 @@ class Header extends React.Component {
 
   renderLoginButtons = () => {
     if (this.props.data) {
-      console.log('this.props.data renderLoginButtons', this.props.data);
-
       return (
         <>
           <div className={styles.userInfo}>

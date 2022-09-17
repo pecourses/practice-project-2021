@@ -17,6 +17,7 @@ export const getPreviewChat = createAsyncThunk(
     }
   }
 );
+
 export const getDialogMessages = createAsyncThunk(
   `${CHAT_SLICE_NAME}/getDialogMessages`,
   async (payload, { rejectWithValue }) => {
@@ -166,6 +167,7 @@ const reducers = {
     state.chatData = payload;
     state.messagesPreview = messagesPreview;
   },
+
   addMessage: (state, { payload }) => {
     const { message, preview } = payload;
     const { messagesPreview } = state;
@@ -184,9 +186,11 @@ const reducers = {
     state.messagesPreview = messagesPreview;
     state.messages = [...state.messages, payload.message];
   },
+
   backToDialogList: state => {
     state.isExpanded = false;
   },
+
   goToExpandedDialog: (state, { payload }) => {
     state.interlocutor = { ...state.interlocutor, ...payload.interlocutor };
     state.chatData = payload.conversationData;
@@ -194,31 +198,39 @@ const reducers = {
     state.isExpanded = true;
     state.messages = [];
   },
+
   clearMessageList: state => {
     state.messages = [];
   },
+
   changeChatShow: state => {
     state.isShowCatalogCreation = false;
     state.isShow = !state.isShow;
   },
+
   setPreviewChatMode: (state, { payload }) => {
     state.chatMode = payload;
   },
+
   changeShowModeCatalog: (state, { payload }) => {
     state.currentCatalog = { ...state.currentCatalog, ...payload };
     state.isShowChatsInCatalog = !state.isShowChatsInCatalog;
     state.isRenameCatalog = false;
   },
+
   changeTypeOfChatAdding: (state, { payload }) => {
     state.catalogCreationMode = payload;
   },
+
   changeShowAddChatToCatalogMenu: (state, { payload }) => {
     state.addChatId = payload;
     state.isShowCatalogCreation = !state.isShowCatalogCreation;
   },
+
   changeRenameCatalogMode: state => {
     state.isRenameCatalog = !state.isRenameCatalog;
   },
+
   clearChatError: state => {
     state.error = null;
   },
