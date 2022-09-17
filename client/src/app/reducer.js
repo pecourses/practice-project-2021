@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import authReducer from './slices/authSlice';
 import getUserReducer from './slices/userSlice';
 import dataForContestReducer from './slices/dataForContestSlice';
-import paymentPeducer from './slices/paymentSlice';
+import paymentReducer from './slices/paymentSlice';
 import getContestsReducer from './slices/getContestsSlice';
 import storeContestReducer from './slices/storeContestSlice';
 import bundleReducer from './slices/bundleSlice';
@@ -15,7 +15,7 @@ const appReducer = combineReducers({
   userStore: getUserReducer,
   auth: authReducer,
   dataForContest: dataForContestReducer,
-  payment: paymentPeducer,
+  payment: paymentReducer,
   contestByIdStore: getContestByIdReducer,
   contestsList: getContestsReducer,
   contestStore: storeContestReducer,
