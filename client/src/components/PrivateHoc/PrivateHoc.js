@@ -3,9 +3,6 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { getUser } from './../../app/slices/userSlice';
 import Spinner from '../Spinner/Spinner';
-import CONSTANTS from '../../constants';
-
-const { SUBSCRIBE_CHAT } = CONSTANTS.GET_USER_MODE;
 
 const PrivateHoc = (Component, props) => {
   class Hoc extends React.Component {
@@ -35,7 +32,7 @@ const PrivateHoc = (Component, props) => {
   const mapStateToProps = state => state.userStore;
 
   const mapDispatchToProps = dispatch => ({
-    getUser: () => dispatch(getUser({ getUserMode: SUBSCRIBE_CHAT })),
+    getUser: () => dispatch(getUser()),
   });
 
   return connect(mapStateToProps, mapDispatchToProps)(Hoc);

@@ -6,8 +6,6 @@ import CONSTANTS from '../../constants';
 import { clearUserStore } from './../../app/slices/userSlice';
 import { getUser } from './../../app/slices/userSlice';
 
-const { SUBSCRIBE_CHAT } = CONSTANTS.GET_USER_MODE;
-
 class Header extends React.Component {
   componentDidMount () {
     if (!this.props.data) {
@@ -27,6 +25,8 @@ class Header extends React.Component {
 
   renderLoginButtons = () => {
     if (this.props.data) {
+      console.log('this.props.data renderLoginButtons', this.props.data);
+
       return (
         <>
           <div className={styles.userInfo}>
@@ -279,7 +279,7 @@ class Header extends React.Component {
 
 const mapStateToProps = state => state.userStore;
 const mapDispatchToProps = dispatch => ({
-  getUser: () => dispatch(getUser({ getUserMode: SUBSCRIBE_CHAT })),
+  getUser: () => dispatch(getUser()),
   clearUserStore: () => dispatch(clearUserStore()),
 });
 

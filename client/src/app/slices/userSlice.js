@@ -2,9 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as restController from './../../api/rest/restController';
 import { controller } from '../../api/ws/socketController';
 import { changeEditModeOnUserProfile } from './userProfileSlice';
-import CONSTANTS from './../../constants';
-
-const { REDIRECT_TO_HOME } = CONSTANTS.GET_USER_MODE;
 
 const USER_SLICE_NAME = 'user';
 
@@ -16,12 +13,13 @@ const initialState = {
 
 export const getUser = createAsyncThunk(
   `${USER_SLICE_NAME}/getUser`,
-  async ({ getUserMode, replace }, { rejectWithValue }) => {
+  async (replace, { rejectWithValue }) => {
     try {
       const { data } = await restController.getUser();
 
       controller.subscribe(data.id);
-      if (getUserMode === REDIRECT_TO_HOME) {
+
+      if (replace) {
         replace('/');
       }
 
@@ -47,25 +45,31 @@ export const updateUser = createAsyncThunk(
 
 const reducers = {
   clearUserStore: state => {
+    console.log('clearUserStore');
     state.error = null;
     state.data = null;
   },
   clearUserError: state => {
+    console.log('clearUserError');
     state.error = null;
   },
 };
 
 const extraReducers = builder => {
   builder.addCase(getUser.pending, state => {
+    console.log('getUser.pending');
     state.isFetching = true;
     state.error = null;
     state.data = null;
   });
   builder.addCase(getUser.fulfilled, (state, { payload }) => {
+    console.log('getUser.fulfilled');
     state.isFetching = false;
     state.data = payload;
   });
   builder.addCase(getUser.rejected, (state, { payload }) => {
+    console.log('getUser.rejected');
+    console.log('payload', payload);
     state.isFetching = false;
     state.error = payload;
   });
