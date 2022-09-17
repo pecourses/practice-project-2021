@@ -10,7 +10,6 @@ import {
   changeMark,
   clearChangeMarkError,
   changeShowImage,
-  changeShowModal,
 } from '../../app/slices/getContestByIdSlice';
 import CONSTANTS from '../../constants';
 import styles from './OfferBox.module.sass';
@@ -223,7 +222,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => {
-  const { changeMarkError, isShowModal } = state.contestByIdStore;
+  const { changeMarkError } = state.contestByIdStore;
   const { id, role } = state.userStore.data;
   const { messagesPreview } = state.chatStore;
   return {
@@ -231,7 +230,6 @@ const mapStateToProps = state => {
     id,
     role,
     messagesPreview,
-    isShowModal,
   };
 };
 

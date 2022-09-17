@@ -109,10 +109,6 @@ const reducers = {
     state.isShowOnFull = isShowOnFull;
     state.imagePath = imagePath;
   },
-  // !!! is not used
-  changeShowModal: (state, { payload }) => {
-    state.isShowModal = payload;
-  },
 };
 
 const extraReducers = builder => {
@@ -204,7 +200,6 @@ export const {
   clearSetOfferStatusError,
   clearChangeMarkError,
   changeShowImage,
-  changeShowModal,
 } = actions;
 
 export default reducer;
