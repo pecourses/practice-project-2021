@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import CONSTANTS from '../../constants';
-import * as restController from './../../api/rest/restController';
+import * as restController from '../../api/rest/restController';
 
-const GET_CONTEST_BY_ID_SLICE_NAME = 'getContestById';
+const CONTEST_BY_ID_SLICE_NAME = 'getContestById';
 
 export const getContestById = createAsyncThunk(
-  GET_CONTEST_BY_ID_SLICE_NAME,
+  `${CONTEST_BY_ID_SLICE_NAME}/getContest`,
   async (payload, { rejectWithValue }) => {
     try {
       const { data } = await restController.getContestById(payload);
@@ -22,7 +22,7 @@ export const getContestById = createAsyncThunk(
 );
 
 export const addOffer = createAsyncThunk(
-  `${GET_CONTEST_BY_ID_SLICE_NAME}/addOffer`,
+  `${CONTEST_BY_ID_SLICE_NAME}/addOffer`,
   async (payload, { rejectWithValue }) => {
     try {
       const { data } = await restController.setNewOffer(payload);
@@ -37,7 +37,7 @@ export const addOffer = createAsyncThunk(
 );
 
 export const setOfferStatus = createAsyncThunk(
-  `${GET_CONTEST_BY_ID_SLICE_NAME}/setOfferStatus`,
+  `${CONTEST_BY_ID_SLICE_NAME}/setOfferStatus`,
   async (payload, { rejectWithValue }) => {
     try {
       const { data } = await restController.setOfferStatus(payload);
@@ -52,7 +52,7 @@ export const setOfferStatus = createAsyncThunk(
 );
 
 export const changeMark = createAsyncThunk(
-  `${GET_CONTEST_BY_ID_SLICE_NAME}/changeMark`,
+  `${CONTEST_BY_ID_SLICE_NAME}/changeMark`,
   async (payload, { rejectWithValue }) => {
     try {
       const { data } = await restController.changeMark(payload);
@@ -67,7 +67,7 @@ export const changeMark = createAsyncThunk(
 );
 
 export const downloadContestFile = createAsyncThunk(
-  `${GET_CONTEST_BY_ID_SLICE_NAME}/downloadContestFile`,
+  `${CONTEST_BY_ID_SLICE_NAME}/downloadContestFile`,
   async (payload, { rejectWithValue }) => {
     try {
       const { data } = await restController.downloadContestFile(payload);
@@ -189,14 +189,14 @@ const extraReducers = builder => {
   });
 };
 
-const getContestByIdSlice = createSlice({
-  name: GET_CONTEST_BY_ID_SLICE_NAME,
+const contestByIdSlice = createSlice({
+  name: CONTEST_BY_ID_SLICE_NAME,
   initialState,
   reducers,
   extraReducers,
 });
 
-const { actions, reducer } = getContestByIdSlice;
+const { actions, reducer } = contestByIdSlice;
 
 export const {
   updateStoreAfterUpdateContest,

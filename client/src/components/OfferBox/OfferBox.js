@@ -10,7 +10,7 @@ import {
   changeMark,
   clearChangeMarkError,
   changeShowImage,
-} from '../../app/slices/getContestByIdSlice';
+} from '../../app/slices/contestByIdSlice';
 import CONSTANTS from '../../constants';
 import styles from './OfferBox.module.sass';
 import 'react-confirm-alert/src/react-confirm-alert.css';

@@ -6,7 +6,7 @@ import paymentReducer from './slices/paymentSlice';
 import getContestsReducer from './slices/contestsSlice';
 import storeContestReducer from './slices/contestSavingSlice';
 import bundleReducer from './slices/bundleSlice';
-import getContestByIdReducer from './slices/getContestByIdSlice';
+import getContestByIdReducer from './slices/contestByIdSlice';
 import updateContestReducer from './slices/contestUpdationSlice';
 import chatReducer from './slices/chatSlice';
 import userProfileReducer from './slices/userProfileSlice';

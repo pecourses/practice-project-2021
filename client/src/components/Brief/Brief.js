@@ -5,7 +5,7 @@ import {
   updateContest,
   clearContestUpdationStore,
 } from './../../app/slices/contestUpdationSlice';
-import { changeEditContest } from './../../app/slices/getContestByIdSlice';
+import { changeEditContest } from './../../app/slices/contestByIdSlice';
 import ContestForm from '../ContestForm/ContestForm';
 import styles from './Brief.module.sass';
 import ContestInfo from '../Contest/ContestInfo/ContestInfo';

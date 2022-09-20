@@ -11,7 +11,7 @@ import {
   changeEditContest,
   changeContestViewMode,
   changeShowImage,
-} from '../../app/slices/getContestByIdSlice';
+} from '../../app/slices/contestByIdSlice';
 import Header from '../../components/Header/Header';
 import ContestSideBar from '../../components/ContestSideBar/ContestSideBar';
 import styles from './ContestPage.module.sass';
