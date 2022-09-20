@@ -83,7 +83,6 @@ const initialState = {
 };
 
 const reducers = {
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! only in update after update contest
   updateStoreAfterUpdateContest: (state, { payload }) => {
     state.error = null;
     state.isEditContest = false;
@@ -134,7 +133,6 @@ const extraReducers = builder => {
 
   builder.addCase(addOffer.fulfilled, (state, { payload }) => {
     state.offers.unshift(payload);
-    // ! probably state.addOfferError = null;
     state.error = null;
   });
   builder.addCase(addOffer.rejected, (state, { payload }) => {
@@ -142,7 +140,6 @@ const extraReducers = builder => {
   });
 
   builder.addCase(setOfferStatus.fulfilled, (state, { payload }) => {
-    // ! работает ли ?
     state.offers.forEach(offer => {
       if (payload.status === CONSTANTS.OFFER_STATUS_WON) {
         offer.status =
@@ -153,8 +150,6 @@ const extraReducers = builder => {
         offer.status = CONSTANTS.OFFER_STATUS_REJECTED;
       }
     });
-    state.offers = [...state.offers];
-    // ! probably state.setOfferStatusError = null;
     state.error = null;
   });
   builder.addCase(setOfferStatus.rejected, (state, { payload }) => {
@@ -164,7 +159,6 @@ const extraReducers = builder => {
   builder.addCase(
     changeMark.fulfilled,
     (state, { payload: { data, offerId, mark } }) => {
-      // ! работает ли ?
       state.offers.forEach(offer => {
         if (offer.User.id === data.userId) {
           offer.User.rating = data.rating;
@@ -173,8 +167,6 @@ const extraReducers = builder => {
           offer.mark = mark;
         }
       });
-      state.offers = [...state.offers];
-      // ! probably state.changeMarkError = null;
       state.error = null;
     }
   );
