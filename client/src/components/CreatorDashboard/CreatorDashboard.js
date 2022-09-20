@@ -8,7 +8,7 @@ import {
   getContests,
   clearContestsList,
   setNewCreatorFilter,
-} from '../../app/slices/getContestsSlice';
+} from '../../app/slices/contestsSlice';
 import { getDataForContest } from './../../app/slices/dataForContestSlice';
 import ContestsContainer from '../ContestsContainer/ContestsContainer';
 import ContestBox from '../ContestBox/ContestBox';

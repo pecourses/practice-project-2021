@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import * as restController from './../../api/rest/restController';
+import * as restController from '../../api/rest/restController';
 import CONSTANTS from '../../constants';
 
-const GET_CONTESTS_SLICE_NAME = 'getContests';
+const CONTESTS_SLICE_NAME = 'contests';
 
 export const getContests = createAsyncThunk(
-  GET_CONTESTS_SLICE_NAME,
+  `${CONTESTS_SLICE_NAME}/getContests`,
   async ({ requestData, role }, { rejectWithValue }) => {
     try {
       const { data } =
@@ -71,14 +71,14 @@ const extraReducers = builder => {
   });
 };
 
-const getContestsSlice = createSlice({
-  name: GET_CONTESTS_SLICE_NAME,
+const contestsSlice = createSlice({
+  name: CONTESTS_SLICE_NAME,
   initialState,
   reducers,
   extraReducers,
 });
 
-const { actions, reducer } = getContestsSlice;
+const { actions, reducer } = contestsSlice;
 
 export const {
   clearContestsList,
