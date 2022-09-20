@@ -16,13 +16,10 @@ export const getUser = createAsyncThunk(
   async (replace, { rejectWithValue }) => {
     try {
       const { data } = await restController.getUser();
-
       controller.subscribe(data.id);
-
       if (replace) {
         replace('/');
       }
-
       return data;
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -67,6 +64,7 @@ const extraReducers = builder => {
     state.isFetching = false;
     state.error = payload;
   });
+
   builder.addCase(updateUser.fulfilled, (state, { payload }) => {
     state.data = { ...state.data, ...payload };
     state.error = null;
