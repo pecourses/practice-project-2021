@@ -9,10 +9,12 @@ export const updateContest = createAsyncThunk(
   async (payload, { rejectWithValue, dispatch }) => {
     try {
       const { data } = await restController.updateContest(payload);
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       dispatch(updateStoreAfterUpdateContest(data));
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -20,7 +22,6 @@ export const updateContest = createAsyncThunk(
 const initialState = {
   isFetching: true,
   error: null,
-  data: null,
 };
 
 const reducers = {
@@ -31,18 +32,13 @@ const extraReducers = builder => {
   builder.addCase(updateContest.pending, state => {
     state.isFetching = true;
     state.error = null;
-    state.data = null;
   });
-  // ! не используется
-  builder.addCase(updateContest.fulfilled, (state, { payload }) => {
+  builder.addCase(updateContest.fulfilled, state => {
     state.isFetching = false;
-    // state.error = null;
-    state.data = payload;
   });
   builder.addCase(updateContest.rejected, (state, { payload }) => {
     state.isFetching = false;
     state.error = payload;
-    // state.data = null;
   });
 };
 

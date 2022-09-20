@@ -10,7 +10,6 @@ const reducers = {
   updateBundle: (state, { payload }) => {
     state.bundle = payload;
   },
-  clearBundle: () => initialState,
 };
 
 const bundleSlice = createSlice({
@@ -21,6 +20,6 @@ const bundleSlice = createSlice({
 
 const { actions, reducer } = bundleSlice;
 
-export const { updateBundle, clearBundle } = actions;
+export const { updateBundle } = actions;
 
 export default reducer;

@@ -21,10 +21,6 @@ const initialState = {
   error: null,
 };
 
-const reducers = {
-  clearPreference: () => initialState,
-};
-
 const extraReducers = builder => {
   builder.addCase(getDataForContest.pending, state => {
     state.isFetching = true;
@@ -44,12 +40,10 @@ const extraReducers = builder => {
 const dataForContestSlice = createSlice({
   name: `${DATA_FOR_CONTEST_SLICE_NAME}`,
   initialState,
-  reducers,
+  reducers: {},
   extraReducers,
 });
 
-const { actions, reducer } = dataForContestSlice;
-
-export const { clearPreference } = actions;
+const { reducer } = dataForContestSlice;
 
 export default reducer;

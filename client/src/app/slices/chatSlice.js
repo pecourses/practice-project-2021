@@ -391,7 +391,7 @@ const extraReducers = builder => {
     state.currentCatalog = payload;
     state.isRenameCatalog = false;
   });
-  builder.addCase(changeCatalogName.rejected, (state, { payload }) => {
+  builder.addCase(changeCatalogName.rejected, state => {
     state.isRenameCatalog = false;
   });
 };
