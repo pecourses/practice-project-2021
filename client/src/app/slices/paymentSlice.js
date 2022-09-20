@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as restController from './../../api/rest/restController';
-import { clearContestStore } from './storeContestSlice';
+import { clearContestStore } from './contestSavingSlice';
 import { changeProfileViewMode } from './userProfileSlice';
 import { updateUser } from './userSlice';
 import CONSTANTS from './../../constants';

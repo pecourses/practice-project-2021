@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const STORE_CONTEST_SLICE_NAME = 'storeContest';
+const CONTEST_SAVING_SLICE_NAME = 'contestCreation';
 
 const initialState = {
   contests: {},
@@ -16,13 +16,13 @@ const reducers = {
   clearContestStore: () => initialState,
 };
 
-const storeContestSlice = createSlice({
-  name: STORE_CONTEST_SLICE_NAME,
+const contestSavingSlice = createSlice({
+  name: CONTEST_SAVING_SLICE_NAME,
   initialState,
   reducers,
 });
 
-const { actions, reducer } = storeContestSlice;
+const { actions, reducer } = contestSavingSlice;
 
 export const { saveContestToStore, clearContestStore } = actions;
 

@@ -4,7 +4,7 @@ import getUserReducer from './slices/userSlice';
 import dataForContestReducer from './slices/dataForContestSlice';
 import paymentReducer from './slices/paymentSlice';
 import getContestsReducer from './slices/contestsSlice';
-import storeContestReducer from './slices/storeContestSlice';
+import storeContestReducer from './slices/contestSavingSlice';
 import bundleReducer from './slices/bundleSlice';
 import getContestByIdReducer from './slices/getContestByIdSlice';
 import updateContestReducer from './slices/contestUpdationSlice';
