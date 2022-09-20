@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { updateStoreAfterUpdateContest } from './getContestByIdSlice';
-import * as restController from './../../api/rest/restController';
+import * as restController from '../../api/rest/restController';
 
-const UPDATE_CONTEST_SLICE = 'updateContest';
+const CONTEST_UPDATION_SLICE_NAME = 'contestUpdation';
 
 export const updateContest = createAsyncThunk(
-  UPDATE_CONTEST_SLICE,
+  CONTEST_UPDATION_SLICE_NAME,
   async (payload, { rejectWithValue, dispatch }) => {
     try {
       const { data } = await restController.updateContest(payload);
@@ -25,7 +25,7 @@ const initialState = {
 };
 
 const reducers = {
-  clearUpdateContestStore: () => initialState,
+  clearContestUpdationStore: () => initialState,
 };
 
 const extraReducers = builder => {
@@ -42,15 +42,15 @@ const extraReducers = builder => {
   });
 };
 
-const updateContestSlice = createSlice({
-  name: UPDATE_CONTEST_SLICE,
+const contestUpdationSlice = createSlice({
+  name: CONTEST_UPDATION_SLICE_NAME,
   initialState,
   reducers,
   extraReducers,
 });
 
-const { actions, reducer } = updateContestSlice;
+const { actions, reducer } = contestUpdationSlice;
 
-export const { clearUpdateContestStore } = actions;
+export const { clearContestUpdationStore } = actions;
 
 export default reducer;

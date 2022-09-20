@@ -3,8 +3,8 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   updateContest,
-  clearUpdateContestStore,
-} from './../../app/slices/updateContestSlice';
+  clearContestUpdationStore,
+} from './../../app/slices/contestUpdationSlice';
 import { changeEditContest } from './../../app/slices/getContestByIdSlice';
 import ContestForm from '../ContestForm/ContestForm';
 import styles from './Brief.module.sass';
@@ -70,7 +70,7 @@ const Brief = props => {
     changeEditContest,
     role,
     goChat,
-    clearUpdateContestStore,
+    clearContestUpdationStore,
   } = props;
   const { error } = props.updateContestStore;
   const { id } = props.userStore.data;
@@ -91,7 +91,7 @@ const Brief = props => {
         <Error
           data={error.data}
           status={error.status}
-          clearError={clearUpdateContestStore}
+          clearError={clearContestUpdationStore}
         />
       )}
       <ContestForm
@@ -112,7 +112,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   update: data => dispatch(updateContest(data)),
   changeEditContest: data => dispatch(changeEditContest(data)),
-  clearUpdateContestStore: () => dispatch(clearUpdateContestStore()),
+  clearContestUpdationStore: () => dispatch(clearContestUpdationStore()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Brief));

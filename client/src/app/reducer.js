@@ -7,7 +7,7 @@ import getContestsReducer from './slices/getContestsSlice';
 import storeContestReducer from './slices/storeContestSlice';
 import bundleReducer from './slices/bundleSlice';
 import getContestByIdReducer from './slices/getContestByIdSlice';
-import updateContestReducer from './slices/updateContestSlice';
+import updateContestReducer from './slices/contestUpdationSlice';
 import chatReducer from './slices/chatSlice';
 import userProfileReducer from './slices/userProfileSlice';
 
