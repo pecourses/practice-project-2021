@@ -5,7 +5,7 @@ import {
   backToDialogList,
   changeChatFavorite,
   changeChatBlock,
-} from './../../../../app/slices/chatSlice';
+} from './../../../../store/slices/chatSlice';
 import styles from './ChatHeader.module.sass';
 import CONSTANTS from '../../../../constants';
 

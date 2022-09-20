@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import {
   updateContest,
   clearContestUpdationStore,
-} from './../../app/slices/contestUpdationSlice';
-import { changeEditContest } from './../../app/slices/contestByIdSlice';
+} from './../../store/slices/contestUpdationSlice';
+import { changeEditContest } from './../../store/slices/contestByIdSlice';
 import ContestForm from '../ContestForm/ContestForm';
 import styles from './Brief.module.sass';
 import ContestInfo from '../Contest/ContestInfo/ContestInfo';

@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import isEqual from 'lodash/isEqual';
 import remove from 'lodash/remove';
-import * as restController from './../../api/rest/restController';
-import CONSTANTS from './../../constants';
+import * as restController from '../../api/rest/restController';
+import CONSTANTS from '../../constants';
 
 const CHAT_SLICE_NAME = 'chat';
 

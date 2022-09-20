@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import Logo from '../../components/Logo';
 import styles from './LoginPage.module.sass';
-import { clearAuthError } from '../../app/slices/authSlice';
+import { clearAuthError } from '../../store/slices/authSlice';
 import CONSTANTS from '../../constants';
 
 const LoginPage = props => (

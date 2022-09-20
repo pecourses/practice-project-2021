@@ -5,7 +5,7 @@ import {
   getContests,
   clearContestsList,
   setNewCustomerFilter,
-} from '../../app/slices/contestsSlice';
+} from '../../store/slices/contestsSlice';
 import CONSTANTS from '../../constants';
 import ContestsContainer from '../ContestsContainer/ContestsContainer';
 import ContestBox from '../ContestBox/ContestBox';

@@ -4,7 +4,7 @@ import { Form, Formik } from 'formik';
 import '@snowpak/react-credit-cards/es/styles-compiled.css';
 import { connect } from 'react-redux';
 import styles from './PayForm.module.sass';
-import { changeFocusOnCard } from './../../app/slices/paymentSlice';
+import { changeFocusOnCard } from './../../store/slices/paymentSlice';
 import PayInput from '../InputComponents/PayInput/PayInput';
 import Schems from '../../validators/validationSchems';
 

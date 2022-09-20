@@ -11,7 +11,7 @@ import contestUpdationReducer from './slices/contestUpdationSlice';
 import chatReducer from './slices/chatSlice';
 import userProfileReducer from './slices/userProfileSlice';
 
-const appReducer = combineReducers({
+const rootReducer = combineReducers({
   userStore: userReducer,
   auth: authReducer,
   dataForContest: dataForContestReducer,
@@ -25,4 +25,4 @@ const appReducer = combineReducers({
   userProfile: userProfileReducer,
 });
 
-export default appReducer;
+export default rootReducer;

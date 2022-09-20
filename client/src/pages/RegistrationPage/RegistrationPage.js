@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Logo from '../../components/Logo';
 import RegistrationForm from '../../components/RegistrationForm/RegistrationForm';
 import styles from './RegistrationPage.module.sass';
-import { clearAuthError } from '../../app/slices/authSlice';
+import { clearAuthError } from '../../store/slices/authSlice';
 import CONSTANTS from '../../constants';
 
 const RegistrationPage = props => {

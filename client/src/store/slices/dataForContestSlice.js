@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import * as restController from './../../api/rest/restController';
+import * as restController from '../../api/rest/restController';
 
 const DATA_FOR_CONTEST_SLICE_NAME = 'dataForContest';
 

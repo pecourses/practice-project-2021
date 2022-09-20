@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Formik, Form } from 'formik';
 import FormInput from '../../../FormInput/FormInput';
 import styles from './CreateCatalog.module.sass';
-import { createCatalog } from './../../../../app/slices/chatSlice';
+import { createCatalog } from './../../../../store/slices/chatSlice';
 import Schems from '../../../../validators/validationSchems';
 
 const CreateCatalog = props => {

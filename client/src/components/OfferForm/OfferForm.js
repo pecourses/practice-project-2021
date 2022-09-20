@@ -5,7 +5,7 @@ import CONTANTS from '../../constants';
 import {
   addOffer,
   clearAddOfferError,
-} from '../../app/slices/contestByIdSlice';
+} from '../../store/slices/contestByIdSlice';
 import styles from './OfferForm.module.sass';
 import ImageUpload from '../InputComponents/ImageUpload/ImageUpload';
 import FormInput from '../FormInput/FormInput';

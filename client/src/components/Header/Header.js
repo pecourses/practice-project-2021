@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import styles from './Header.module.sass';
 import CONSTANTS from '../../constants';
-import { clearUserStore } from './../../app/slices/userSlice';
-import { getUser } from './../../app/slices/userSlice';
+import { clearUserStore } from './../../store/slices/userSlice';
+import { getUser } from './../../store/slices/userSlice';
 
 class Header extends React.Component {
   componentDidMount () {

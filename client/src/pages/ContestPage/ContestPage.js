@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
 import LightBox from 'react-image-lightbox';
-import { goToExpandedDialog } from './../../app/slices/chatSlice';
+import { goToExpandedDialog } from './../../store/slices/chatSlice';
 import {
   getContestById,
   setOfferStatus,
@@ -11,7 +11,7 @@ import {
   changeEditContest,
   changeContestViewMode,
   changeShowImage,
-} from '../../app/slices/contestByIdSlice';
+} from '../../store/slices/contestByIdSlice';
 import Header from '../../components/Header/Header';
 import ContestSideBar from '../../components/ContestSideBar/ContestSideBar';
 import styles from './ContestPage.module.sass';

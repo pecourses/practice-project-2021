@@ -8,8 +8,8 @@ import {
   getContests,
   clearContestsList,
   setNewCreatorFilter,
-} from '../../app/slices/contestsSlice';
-import { getDataForContest } from './../../app/slices/dataForContestSlice';
+} from '../../store/slices/contestsSlice';
+import { getDataForContest } from './../../store/slices/dataForContestSlice';
 import ContestsContainer from '../ContestsContainer/ContestsContainer';
 import ContestBox from '../ContestBox/ContestBox';
 import styles from './CreatorDashboard.module.sass';

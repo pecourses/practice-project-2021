@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import * as restController from './../../api/rest/restController';
+import * as restController from '../../api/rest/restController';
 import { clearContestStore } from './contestSavingSlice';
 import { changeProfileViewMode } from './userProfileSlice';
 import { updateUser } from './userSlice';
-import CONSTANTS from './../../constants';
+import CONSTANTS from '../../constants';
 
 const PAYMENT_SLICE_NAME = 'payment';
 

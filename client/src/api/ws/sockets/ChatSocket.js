@@ -4,7 +4,7 @@ import CONTANTS from '../../../constants';
 import {
   addMessage,
   changeBlockStatusInStore,
-} from './../../../app/slices/chatSlice';
+} from '../../../store/slices/chatSlice';
 import _ from 'lodash';
 
 class ChatSocket extends WebSocket {

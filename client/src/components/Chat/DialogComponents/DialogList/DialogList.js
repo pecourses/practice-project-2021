@@ -7,7 +7,7 @@ import {
   changeChatFavorite,
   changeChatBlock,
   changeShowAddChatToCatalogMenu,
-} from './../../../../app/slices/chatSlice';
+} from './../../../../store/slices/chatSlice';
 import DialogBox from '../DialogBox/DialogBox';
 import styles from './DialogList.module.sass';
 
