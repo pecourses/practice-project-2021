@@ -15,7 +15,10 @@ export const pay = createAsyncThunk(
       history.replace('dashboard');
       dispatch(clearContestStore());
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -28,7 +31,10 @@ export const cashOut = createAsyncThunk(
       dispatch(updateUser.fulfilled(data));
       dispatch(changeProfileViewMode(CONSTANTS.USER_INFO_MODE));
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );

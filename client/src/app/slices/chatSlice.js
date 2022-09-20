@@ -13,7 +13,10 @@ export const getPreviewChat = createAsyncThunk(
       const { data } = await restController.getPreviewChat();
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -25,7 +28,10 @@ export const getDialogMessages = createAsyncThunk(
       const { data } = await restController.getDialog(payload);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -37,7 +43,10 @@ export const sendMessage = createAsyncThunk(
       const { data } = await restController.newMessage(payload);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -49,7 +58,10 @@ export const changeChatFavorite = createAsyncThunk(
       const { data } = await restController.changeChatFavorite(payload);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -61,7 +73,10 @@ export const changeChatBlock = createAsyncThunk(
       const { data } = await restController.changeChatBlock(payload);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -73,7 +88,10 @@ export const getCatalogList = createAsyncThunk(
       const { data } = await restController.getCatalogList(payload);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -85,7 +103,10 @@ export const addChatToCatalog = createAsyncThunk(
       const { data } = await restController.addChatToCatalog(payload);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -97,7 +118,10 @@ export const createCatalog = createAsyncThunk(
       const { data } = await restController.createCatalog(payload);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -109,7 +133,10 @@ export const deleteCatalog = createAsyncThunk(
       await restController.deleteCatalog(payload);
       return payload;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -121,7 +148,10 @@ export const removeChatFromCatalog = createAsyncThunk(
       const { data } = await restController.removeChatFromCatalog(payload);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -133,7 +163,10 @@ export const changeCatalogName = createAsyncThunk(
       const { data } = await restController.changeCatalogName(payload);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );

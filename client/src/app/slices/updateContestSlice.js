@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { updateStoreAfterUpdateContest } from './getContestByIdSlice';
-const restController = require('./../../api/rest/restController');
+import * as restController from './../../api/rest/restController';
 
 const UPDATE_CONTEST_SLICE = 'updateContest';
 

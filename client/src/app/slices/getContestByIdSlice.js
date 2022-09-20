@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import CONSTANTS from '../../constants';
-
-const restController = require('./../../api/rest/restController');
+import * as restController from './../../api/rest/restController';
 
 const GET_CONTEST_BY_ID_SLICE_NAME = 'getContestById';
 
@@ -14,7 +13,10 @@ export const getContestById = createAsyncThunk(
       delete data.Offers;
       return { contestData: data, offers: Offers };
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -26,7 +28,10 @@ export const addOffer = createAsyncThunk(
       const { data } = await restController.setNewOffer(payload);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -38,7 +43,10 @@ export const setOfferStatus = createAsyncThunk(
       const { data } = await restController.setOfferStatus(payload);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -50,7 +58,10 @@ export const changeMark = createAsyncThunk(
       const { data } = await restController.changeMark(payload);
       return { data, offerId: payload.offerId, mark: payload.mark };
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
@@ -62,7 +73,10 @@ export const downloadContestFile = createAsyncThunk(
       const { data } = await restController.downloadContestFile(payload);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );

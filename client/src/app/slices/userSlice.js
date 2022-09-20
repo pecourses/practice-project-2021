@@ -5,12 +5,6 @@ import { changeEditModeOnUserProfile } from './userProfileSlice';
 
 const USER_SLICE_NAME = 'user';
 
-const initialState = {
-  isFetching: true,
-  error: null,
-  data: null,
-};
-
 export const getUser = createAsyncThunk(
   `${USER_SLICE_NAME}/getUser`,
   async (replace, { rejectWithValue }) => {
@@ -22,10 +16,19 @@ export const getUser = createAsyncThunk(
       }
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
+
+const initialState = {
+  isFetching: true,
+  error: null,
+  data: null,
+};
 
 export const updateUser = createAsyncThunk(
   `${USER_SLICE_NAME}/updateUser`,
@@ -35,7 +38,10 @@ export const updateUser = createAsyncThunk(
       dispatch(changeEditModeOnUserProfile(false));
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );

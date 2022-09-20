@@ -13,7 +13,10 @@ export const checkAuth = createAsyncThunk(
         : await restController.registerRequest(authInfo);
       history.replace('/');
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );

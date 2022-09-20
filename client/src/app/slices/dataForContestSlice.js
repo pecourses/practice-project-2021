@@ -10,7 +10,10 @@ export const getDataForContest = createAsyncThunk(
       const { data } = await restController.dataForContest(payload);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue({
+        data: err.response.data,
+        status: err.response.status,
+      });
     }
   }
 );
