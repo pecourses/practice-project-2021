@@ -9,11 +9,8 @@ export const getDataForContest = createAsyncThunk(
     try {
       const { data } = await restController.dataForContest(payload);
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );

@@ -12,11 +12,8 @@ export const getContestById = createAsyncThunk(
       const { Offers } = data;
       delete data.Offers;
       return { contestData: data, offers: Offers };
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -27,11 +24,8 @@ export const addOffer = createAsyncThunk(
     try {
       const { data } = await restController.setNewOffer(payload);
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -42,11 +36,8 @@ export const setOfferStatus = createAsyncThunk(
     try {
       const { data } = await restController.setOfferStatus(payload);
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -57,11 +48,8 @@ export const changeMark = createAsyncThunk(
     try {
       const { data } = await restController.changeMark(payload);
       return { data, offerId: payload.offerId, mark: payload.mark };
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -72,11 +60,8 @@ export const downloadContestFile = createAsyncThunk(
     try {
       const { data } = await restController.downloadContestFile(payload);
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );

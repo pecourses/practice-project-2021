@@ -14,11 +14,8 @@ export const pay = createAsyncThunk(
       await restController.payMent(data);
       history.replace('dashboard');
       dispatch(clearContestStore());
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -30,11 +27,8 @@ export const cashOut = createAsyncThunk(
       const { data } = await restController.cashOut(payload);
       dispatch(updateUser.fulfilled(data));
       dispatch(changeProfileViewMode(CONSTANTS.USER_INFO_MODE));
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );

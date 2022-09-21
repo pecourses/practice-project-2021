@@ -10,11 +10,8 @@ export const updateContest = createAsyncThunk(
     try {
       const { data } = await restController.updateContest(payload);
       dispatch(updateStoreAfterUpdateContest(data));
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );

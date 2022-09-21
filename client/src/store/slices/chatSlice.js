@@ -12,11 +12,8 @@ export const getPreviewChat = createAsyncThunk(
     try {
       const { data } = await restController.getPreviewChat();
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -27,11 +24,8 @@ export const getDialogMessages = createAsyncThunk(
     try {
       const { data } = await restController.getDialog(payload);
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -42,11 +36,8 @@ export const sendMessage = createAsyncThunk(
     try {
       const { data } = await restController.newMessage(payload);
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -57,11 +48,8 @@ export const changeChatFavorite = createAsyncThunk(
     try {
       const { data } = await restController.changeChatFavorite(payload);
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -72,11 +60,8 @@ export const changeChatBlock = createAsyncThunk(
     try {
       const { data } = await restController.changeChatBlock(payload);
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -87,11 +72,8 @@ export const getCatalogList = createAsyncThunk(
     try {
       const { data } = await restController.getCatalogList(payload);
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -102,11 +84,8 @@ export const addChatToCatalog = createAsyncThunk(
     try {
       const { data } = await restController.addChatToCatalog(payload);
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -117,11 +96,8 @@ export const createCatalog = createAsyncThunk(
     try {
       const { data } = await restController.createCatalog(payload);
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -132,11 +108,8 @@ export const deleteCatalog = createAsyncThunk(
     try {
       await restController.deleteCatalog(payload);
       return payload;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -147,11 +120,8 @@ export const removeChatFromCatalog = createAsyncThunk(
     try {
       const { data } = await restController.removeChatFromCatalog(payload);
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -162,11 +132,8 @@ export const changeCatalogName = createAsyncThunk(
     try {
       const { data } = await restController.changeCatalogName(payload);
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );

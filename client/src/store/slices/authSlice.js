@@ -12,11 +12,8 @@ export const checkAuth = createAsyncThunk(
         ? await restController.loginRequest(authInfo)
         : await restController.registerRequest(authInfo);
       history.replace('/');
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );

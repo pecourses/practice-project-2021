@@ -15,11 +15,8 @@ export const getUser = createAsyncThunk(
         replace('/');
       }
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
@@ -37,11 +34,8 @@ export const updateUser = createAsyncThunk(
       const { data } = await restController.updateUser(payload);
       dispatch(changeEditModeOnUserProfile(false));
       return data;
-    } catch (err) {
-      return rejectWithValue({
-        data: err.response.data,
-        status: err.response.status,
-      });
+    } catch ({ response: { data, status } }) {
+      return rejectWithValue({ data, status });
     }
   }
 );
