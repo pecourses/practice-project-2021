@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import * as restController from '../../api/rest/restController';
 import CONSTANTS from '../../constants';
+import { pendingReducer } from '../../utils/store';
 
 const CONTESTS_SLICE_NAME = 'contests';
 
@@ -52,10 +53,7 @@ const reducers = {
 };
 
 const extraReducers = builder => {
-  builder.addCase(getContests.pending, state => {
-    state.isFetching = true;
-    state.error = null;
-  });
+  builder.addCase(getContests.pending, pendingReducer);
   builder.addCase(getContests.fulfilled, (state, { payload }) => {
     state.isFetching = false;
     state.contests = [...state.contests, ...payload.contests];

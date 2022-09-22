@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as restController from '../../api/rest/restController';
 import { controller } from '../../api/ws/socketController';
+import { rejectedReducer } from '../../utils/store';
 import { changeEditModeOnUserProfile } from './userProfileSlice';
 
 const USER_SLICE_NAME = 'user';
@@ -60,10 +61,7 @@ const extraReducers = builder => {
     state.isFetching = false;
     state.data = payload;
   });
-  builder.addCase(getUser.rejected, (state, { payload }) => {
-    state.isFetching = false;
-    state.error = payload;
-  });
+  builder.addCase(getUser.rejected, rejectedReducer);
 
   builder.addCase(updateUser.fulfilled, (state, { payload }) => {
     state.data = { ...state.data, ...payload };

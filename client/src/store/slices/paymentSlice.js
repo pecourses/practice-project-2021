@@ -4,6 +4,7 @@ import { clearContestStore } from './contestSavingSlice';
 import { changeProfileViewMode } from './userProfileSlice';
 import { updateUser } from './userSlice';
 import CONSTANTS from '../../constants';
+import { pendingReducer, rejectedReducer } from '../../utils/store';
 
 const PAYMENT_SLICE_NAME = 'payment';
 
@@ -47,25 +48,13 @@ const reducers = {
 };
 
 const extraReducers = builder => {
-  builder.addCase(pay.pending, state => {
-    state.isFetching = true;
-    state.error = null;
-  });
+  builder.addCase(pay.pending, pendingReducer);
   builder.addCase(pay.fulfilled, () => initialState);
-  builder.addCase(pay.rejected, (state, { payload }) => {
-    state.isFetching = false;
-    state.error = payload;
-  });
+  builder.addCase(pay.rejected, rejectedReducer);
 
-  builder.addCase(cashOut.pending, state => {
-    state.isFetching = true;
-    state.error = null;
-  });
+  builder.addCase(cashOut.pending, pendingReducer);
   builder.addCase(cashOut.fulfilled, () => initialState);
-  builder.addCase(cashOut.rejected, (state, { payload }) => {
-    state.isFetching = false;
-    state.error = payload;
-  });
+  builder.addCase(cashOut.rejected, rejectedReducer);
 };
 
 const paymentSlice = createSlice({

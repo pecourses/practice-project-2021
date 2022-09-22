@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import CONSTANTS from '../../constants';
 import * as restController from '../../api/rest/restController';
+import { rejectedReducer } from '../../utils/store';
 
 const CONTEST_BY_ID_SLICE_NAME = 'getContestById';
 
@@ -125,10 +126,7 @@ const extraReducers = builder => {
       state.offers = offers;
     }
   );
-  builder.addCase(getContestById.rejected, (state, { payload }) => {
-    state.isFetching = false;
-    state.error = payload;
-  });
+  builder.addCase(getContestById.rejected, rejectedReducer);
 
   builder.addCase(addOffer.fulfilled, (state, { payload }) => {
     state.offers.unshift(payload);

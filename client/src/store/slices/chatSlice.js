@@ -3,6 +3,7 @@ import isEqual from 'lodash/isEqual';
 import remove from 'lodash/remove';
 import * as restController from '../../api/rest/restController';
 import CONSTANTS from '../../constants';
+import { pendingReducer } from '../../utils/store';
 
 const CHAT_SLICE_NAME = 'chat';
 
@@ -318,10 +319,7 @@ const extraReducers = builder => {
     state.isFetching = false;
     state.catalogList = [...payload];
   });
-  builder.addCase(getCatalogList.rejected, (state, { payload }) => {
-    state.isFetching = false;
-    state.error = payload;
-  });
+  builder.addCase(getCatalogList.rejected, pendingReducer);
 
   builder.addCase(addChatToCatalog.fulfilled, (state, { payload }) => {
     const { catalogList } = state;

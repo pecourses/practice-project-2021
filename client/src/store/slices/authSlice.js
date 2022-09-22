@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import CONSTANTS from '../../constants';
 import * as restController from '../../api/rest/restController';
+import {
+  pendingReducer,
+  fulfilledReducer,
+  rejectedReducer,
+} from '../../utils/store';
 
 const AUTH_SLICE_NAME = 'auth';
 
@@ -31,17 +36,9 @@ const reducers = {
 };
 
 const extraReducers = builder => {
-  builder.addCase(checkAuth.pending, state => {
-    state.isFetching = true;
-    state.error = null;
-  });
-  builder.addCase(checkAuth.fulfilled, state => {
-    state.isFetching = false;
-  });
-  builder.addCase(checkAuth.rejected, (state, { payload }) => {
-    state.isFetching = false;
-    state.error = payload;
-  });
+  builder.addCase(checkAuth.pending, pendingReducer);
+  builder.addCase(checkAuth.fulfilled, fulfilledReducer);
+  builder.addCase(checkAuth.rejected, rejectedReducer);
 };
 
 const authSlice = createSlice({

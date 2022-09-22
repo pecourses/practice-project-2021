@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import * as restController from '../../api/rest/restController';
+import { rejectedReducer } from '../../utils/store';
 
 const DATA_FOR_CONTEST_SLICE_NAME = 'dataForContest';
 
@@ -31,10 +32,7 @@ const extraReducers = builder => {
     state.isFetching = false;
     state.data = payload;
   });
-  builder.addCase(getDataForContest.rejected, (state, { payload }) => {
-    state.isFetching = false;
-    state.error = payload;
-  });
+  builder.addCase(getDataForContest.rejected, rejectedReducer);
 };
 
 const dataForContestSlice = createSlice({
