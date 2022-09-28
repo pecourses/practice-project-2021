@@ -1,143 +1,10 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import isEqual from 'lodash/isEqual';
-import remove from 'lodash/remove';
+import { createSlice } from '@reduxjs/toolkit';
+import { isEqual, remove } from 'lodash';
 import * as restController from '../../api/rest/restController';
 import CONSTANTS from '../../constants';
-import { pendingReducer } from '../../utils/store';
+import { decorateAsyncThunk, pendingReducer } from '../../utils/store';
 
 const CHAT_SLICE_NAME = 'chat';
-
-export const getPreviewChat = createAsyncThunk(
-  `${CHAT_SLICE_NAME}/getPreviewChat`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.getPreviewChat();
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
-export const getDialogMessages = createAsyncThunk(
-  `${CHAT_SLICE_NAME}/getDialogMessages`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.getDialog(payload);
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
-export const sendMessage = createAsyncThunk(
-  `${CHAT_SLICE_NAME}/sendMessage`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.newMessage(payload);
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
-export const changeChatFavorite = createAsyncThunk(
-  `${CHAT_SLICE_NAME}/changeChatFavorite`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.changeChatFavorite(payload);
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
-export const changeChatBlock = createAsyncThunk(
-  `${CHAT_SLICE_NAME}/changeChatBlock`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.changeChatBlock(payload);
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
-export const getCatalogList = createAsyncThunk(
-  `${CHAT_SLICE_NAME}/getCatalogList`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.getCatalogList(payload);
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
-export const addChatToCatalog = createAsyncThunk(
-  `${CHAT_SLICE_NAME}/addChatToCatalog`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.addChatToCatalog(payload);
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
-export const createCatalog = createAsyncThunk(
-  `${CHAT_SLICE_NAME}/createCatalog`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.createCatalog(payload);
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
-export const deleteCatalog = createAsyncThunk(
-  `${CHAT_SLICE_NAME}/deleteCatalog`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      await restController.deleteCatalog(payload);
-      return payload;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
-export const removeChatFromCatalog = createAsyncThunk(
-  `${CHAT_SLICE_NAME}/removeChatFromCatalog`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.removeChatFromCatalog(payload);
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
-export const changeCatalogName = createAsyncThunk(
-  `${CHAT_SLICE_NAME}/changeCatalogName`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.changeCatalogName(payload);
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
 
 const initialState = {
   isFetching: true,
@@ -157,6 +24,95 @@ const initialState = {
   isShowChatsInCatalog: false,
   catalogCreationMode: CONSTANTS.ADD_CHAT_TO_OLD_CATALOG,
 };
+
+export const getPreviewChat = decorateAsyncThunk({
+  key: `${CHAT_SLICE_NAME}/getPreviewChat`,
+  thunk: async () => {
+    const { data } = await restController.getPreviewChat();
+    console.log('data', data);
+    return data;
+  },
+});
+
+export const getDialogMessages = decorateAsyncThunk({
+  key: `${CHAT_SLICE_NAME}/getDialogMessages`,
+  thunk: async payload => {
+    const { data } = await restController.getDialog(payload);
+    return data;
+  },
+});
+
+export const sendMessage = decorateAsyncThunk({
+  key: `${CHAT_SLICE_NAME}/sendMessage`,
+  thunk: async payload => {
+    const { data } = await restController.newMessage(payload);
+    return data;
+  },
+});
+
+export const changeChatFavorite = decorateAsyncThunk({
+  key: `${CHAT_SLICE_NAME}/changeChatFavorite`,
+  thunk: async payload => {
+    const { data } = await restController.changeChatFavorite(payload);
+    return data;
+  },
+});
+
+export const changeChatBlock = decorateAsyncThunk({
+  key: `${CHAT_SLICE_NAME}/changeChatBlock`,
+  thunk: async payload => {
+    const { data } = await restController.changeChatBlock(payload);
+    return data;
+  },
+});
+
+export const getCatalogList = decorateAsyncThunk({
+  key: `${CHAT_SLICE_NAME}/getCatalogList`,
+  thunk: async payload => {
+    const { data } = await restController.getCatalogList(payload);
+    return data;
+  },
+});
+
+export const addChatToCatalog = decorateAsyncThunk({
+  key: `${CHAT_SLICE_NAME}/addChatToCatalog`,
+  thunk: async payload => {
+    const { data } = await restController.addChatToCatalog(payload);
+    return data;
+  },
+});
+
+export const createCatalog = decorateAsyncThunk({
+  key: `${CHAT_SLICE_NAME}/createCatalog`,
+  thunk: async payload => {
+    const { data } = await restController.createCatalog(payload);
+    return data;
+  },
+});
+
+export const deleteCatalog = decorateAsyncThunk({
+  key: `${CHAT_SLICE_NAME}/deleteCatalog`,
+  thunk: async payload => {
+    await restController.deleteCatalog(payload);
+    return payload;
+  },
+});
+
+export const removeChatFromCatalog = decorateAsyncThunk({
+  key: `${CHAT_SLICE_NAME}/removeChatFromCatalog`,
+  thunk: async payload => {
+    const { data } = await restController.removeChatFromCatalog(payload);
+    return data;
+  },
+});
+
+export const changeCatalogName = decorateAsyncThunk({
+  key: `${CHAT_SLICE_NAME}/changeCatalogName`,
+  thunk: async payload => {
+    const { data } = await restController.changeCatalogName(payload);
+    return data;
+  },
+});
 
 const reducers = {
   changeBlockStatusInStore: (state, { payload }) => {
@@ -271,14 +227,12 @@ const extraReducers = builder => {
     if (isNew) {
       messagesPreview.push(payload.preview);
     }
-
     const chatData = {
       _id: payload.preview._id,
       participants: payload.preview.participants,
       favoriteList: payload.preview.favoriteList,
       blackList: payload.preview.blackList,
     };
-
     state.chatData = { ...state.chatData, ...chatData };
     state.messagesPreview = messagesPreview;
     state.messages = [...state.messages, payload.message];
@@ -293,7 +247,6 @@ const extraReducers = builder => {
       if (isEqual(preview.participants, payload.participants))
         preview.favoriteList = payload.favoriteList;
     });
-
     state.chatData = payload;
     state.messagesPreview = messagesPreview;
   });
@@ -307,7 +260,6 @@ const extraReducers = builder => {
       if (isEqual(preview.participants, payload.participants))
         preview.blackList = payload.blackList;
     });
-
     state.chatData = payload;
     state.messagesPreview = messagesPreview;
   });
@@ -329,7 +281,6 @@ const extraReducers = builder => {
         break;
       }
     }
-
     state.isShowCatalogCreation = false;
     state.catalogList = [...catalogList];
   });
@@ -353,7 +304,6 @@ const extraReducers = builder => {
       catalogList,
       catalog => payload.catalogId !== catalog._id
     );
-
     state.catalogList = [...newCatalogList];
   });
   builder.addCase(deleteCatalog.rejected, (state, { payload }) => {
@@ -368,7 +318,6 @@ const extraReducers = builder => {
         break;
       }
     }
-
     state.currentCatalog = payload;
     state.catalogList = [...catalogList];
   });
@@ -384,7 +333,6 @@ const extraReducers = builder => {
         break;
       }
     }
-
     state.catalogList = [...catalogList];
     state.currentCatalog = payload;
     state.isRenameCatalog = false;

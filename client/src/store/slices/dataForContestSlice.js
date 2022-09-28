@@ -1,26 +1,22 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import * as restController from '../../api/rest/restController';
-import { rejectedReducer } from '../../utils/store';
+import { decorateAsyncThunk, rejectedReducer } from '../../utils/store';
 
 const DATA_FOR_CONTEST_SLICE_NAME = 'dataForContest';
-
-export const getDataForContest = createAsyncThunk(
-  `${DATA_FOR_CONTEST_SLICE_NAME}/getDataForContest`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.dataForContest(payload);
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
 
 const initialState = {
   isFetching: true,
   data: null,
   error: null,
 };
+
+export const getDataForContest = decorateAsyncThunk({
+  key: `${DATA_FOR_CONTEST_SLICE_NAME}/getDataForContest`,
+  thunk: async payload => {
+    const { data } = await restController.dataForContest(payload);
+    return data;
+  },
+});
 
 const extraReducers = builder => {
   builder.addCase(getDataForContest.pending, state => {

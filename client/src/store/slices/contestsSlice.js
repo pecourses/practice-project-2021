@@ -1,24 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import * as restController from '../../api/rest/restController';
 import CONSTANTS from '../../constants';
-import { pendingReducer } from '../../utils/store';
+import { decorateAsyncThunk, pendingReducer } from '../../utils/store';
 
 const CONTESTS_SLICE_NAME = 'contests';
-
-export const getContests = createAsyncThunk(
-  `${CONTESTS_SLICE_NAME}/getContests`,
-  async ({ requestData, role }, { rejectWithValue }) => {
-    try {
-      const { data } =
-        role === CONSTANTS.CUSTOMER
-          ? await restController.getCustomersContests(requestData)
-          : await restController.getActiveContests(requestData);
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
 
 const initialState = {
   isFetching: true,
@@ -34,6 +19,17 @@ const initialState = {
   },
   haveMore: true,
 };
+
+export const getContests = decorateAsyncThunk({
+  key: `${CONTESTS_SLICE_NAME}/getContests`,
+  thunk: async ({ requestData, role }) => {
+    const { data } =
+      role === CONSTANTS.CUSTOMER
+        ? await restController.getCustomersContests(requestData)
+        : await restController.getActiveContests(requestData);
+    return data;
+  },
+});
 
 const reducers = {
   clearContestsList: state => {

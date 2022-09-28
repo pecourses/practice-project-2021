@@ -1,71 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import CONSTANTS from '../../constants';
 import * as restController from '../../api/rest/restController';
-import { rejectedReducer } from '../../utils/store';
+import { decorateAsyncThunk, rejectedReducer } from '../../utils/store';
 
 const CONTEST_BY_ID_SLICE_NAME = 'getContestById';
-
-export const getContestById = createAsyncThunk(
-  `${CONTEST_BY_ID_SLICE_NAME}/getContest`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.getContestById(payload);
-      const { Offers } = data;
-      delete data.Offers;
-      return { contestData: data, offers: Offers };
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
-export const addOffer = createAsyncThunk(
-  `${CONTEST_BY_ID_SLICE_NAME}/addOffer`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.setNewOffer(payload);
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
-export const setOfferStatus = createAsyncThunk(
-  `${CONTEST_BY_ID_SLICE_NAME}/setOfferStatus`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.setOfferStatus(payload);
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
-export const changeMark = createAsyncThunk(
-  `${CONTEST_BY_ID_SLICE_NAME}/changeMark`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.changeMark(payload);
-      return { data, offerId: payload.offerId, mark: payload.mark };
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
-export const downloadContestFile = createAsyncThunk(
-  `${CONTEST_BY_ID_SLICE_NAME}/downloadContestFile`,
-  async (payload, { rejectWithValue }) => {
-    try {
-      const { data } = await restController.downloadContestFile(payload);
-      return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
 
 const initialState = {
   isFetching: true,
@@ -81,6 +19,48 @@ const initialState = {
   isShowModal: false,
   imagePath: null,
 };
+
+export const getContestById = decorateAsyncThunk({
+  key: `${CONTEST_BY_ID_SLICE_NAME}/getContest`,
+  thunk: async payload => {
+    const { data } = await restController.getContestById(payload);
+    const { Offers } = data;
+    delete data.Offers;
+    return { contestData: data, offers: Offers };
+  },
+});
+
+export const addOffer = decorateAsyncThunk({
+  key: `${CONTEST_BY_ID_SLICE_NAME}/addOffer`,
+  thunk: async payload => {
+    const { data } = await restController.setNewOffer(payload);
+    return data;
+  },
+});
+
+export const setOfferStatus = decorateAsyncThunk({
+  key: `${CONTEST_BY_ID_SLICE_NAME}/setOfferStatus`,
+  thunk: async payload => {
+    const { data } = await restController.setOfferStatus(payload);
+    return data;
+  },
+});
+
+export const changeMark = decorateAsyncThunk({
+  key: `${CONTEST_BY_ID_SLICE_NAME}/changeMark`,
+  thunk: async payload => {
+    const { data } = await restController.changeMark(payload);
+    return { data, offerId: payload.offerId, mark: payload.mark };
+  },
+});
+
+export const downloadContestFile = decorateAsyncThunk({
+  key: `${CONTEST_BY_ID_SLICE_NAME}/downloadContestFile`,
+  thunk: async payload => {
+    const { data } = await restController.downloadContestFile(payload);
+    return data;
+  },
+});
 
 const reducers = {
   updateStoreAfterUpdateContest: (state, { payload }) => {

@@ -1,7 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import CONSTANTS from '../../constants';
 import * as restController from '../../api/rest/restController';
 import {
+  decorateAsyncThunk,
   pendingReducer,
   fulfilledReducer,
   rejectedReducer,
@@ -9,24 +10,20 @@ import {
 
 const AUTH_SLICE_NAME = 'auth';
 
-export const checkAuth = createAsyncThunk(
-  `${AUTH_SLICE_NAME}/checkAuth`,
-  async ({ data: authInfo, history, authMode }, { rejectWithValue }) => {
-    try {
-      authMode === CONSTANTS.AUTH_MODE.LOGIN
-        ? await restController.loginRequest(authInfo)
-        : await restController.registerRequest(authInfo);
-      history.replace('/');
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
-    }
-  }
-);
-
 const initialState = {
   isFetching: false,
   error: null,
 };
+
+export const checkAuth = decorateAsyncThunk({
+  key: `${AUTH_SLICE_NAME}/checkAuth`,
+  thunk: async ({ data: authInfo, history, authMode }) => {
+    authMode === CONSTANTS.AUTH_MODE.LOGIN
+      ? await restController.loginRequest(authInfo)
+      : await restController.registerRequest(authInfo);
+    history.replace('/');
+  },
+});
 
 const reducers = {
   clearAuthError: state => {

@@ -6,6 +6,12 @@ import { changeEditModeOnUserProfile } from './userProfileSlice';
 
 const USER_SLICE_NAME = 'user';
 
+const initialState = {
+  isFetching: true,
+  error: null,
+  data: null,
+};
+
 export const getUser = createAsyncThunk(
   `${USER_SLICE_NAME}/getUser`,
   async (replace, { rejectWithValue }) => {
@@ -21,12 +27,6 @@ export const getUser = createAsyncThunk(
     }
   }
 );
-
-const initialState = {
-  isFetching: true,
-  error: null,
-  data: null,
-};
 
 export const updateUser = createAsyncThunk(
   `${USER_SLICE_NAME}/updateUser`,
