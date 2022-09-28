@@ -72,7 +72,7 @@ const Brief = props => {
     goChat,
     clearContestUpdationStore,
   } = props;
-  const { error } = props.updateContestStore;
+  const { error } = props.contestUpdationStore;
   const { id } = props.userStore.data;
   if (!isEditContest) {
     return (
@@ -105,8 +105,8 @@ const Brief = props => {
 
 const mapStateToProps = state => {
   const { isEditContest } = state.contestByIdStore;
-  const { updateContestStore, userStore } = state;
-  return { updateContestStore, userStore, isEditContest };
+  const { contestUpdationStore, userStore } = state;
+  return { contestUpdationStore, userStore, isEditContest };
 };
 
 const mapDispatchToProps = dispatch => ({

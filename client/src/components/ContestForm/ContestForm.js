@@ -167,7 +167,7 @@ const mapStateToProps = (state, ownProps) => {
   const { isEditContest } = state.contestByIdStore;
   return {
     isEditContest,
-    contestStore: state.contestStore,
+    contestCreationStore: state.contestCreationStore,
     dataForContest: state.dataForContest,
     initialValues: ownProps.defaultData,
   };

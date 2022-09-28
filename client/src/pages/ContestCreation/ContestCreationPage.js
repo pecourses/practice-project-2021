@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import styles from './ContestCreationPage.module.sass';
-import { saveContestToStore } from './../../store/slices/contestSavingSlice';
+import { saveContestToStore } from './../../store/slices/contestCreationSlice';
 import NextButton from '../../components/NextButton/NextButton';
 import ContestForm from '../../components/ContestForm/ContestForm';
 import BackButton from '../../components/BackButton/BackButton';
@@ -11,8 +11,8 @@ import Header from '../../components/Header/Header';
 
 const ContestCreationPage = props => {
   const formRef = useRef();
-  const contestData = props.contestStore.contests[props.contestType]
-    ? props.contestStore.contests[props.contestType]
+  const contestData = props.contestCreationStore.contests[props.contestType]
+    ? props.contestCreationStore.contests[props.contestType]
     : { contestType: props.contestType };
 
   const handleSubmit = values => {
@@ -69,8 +69,8 @@ const ContestCreationPage = props => {
 };
 
 const mapStateToProps = state => {
-  const { contestStore, bundleStore } = state;
-  return { contestStore, bundleStore };
+  const { contestCreationStore, bundleStore } = state;
+  return { contestCreationStore, bundleStore };
 };
 
 const mapDispatchToProps = dispatch => ({

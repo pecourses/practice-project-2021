@@ -9,7 +9,7 @@ import Error from '../../components/Error/Error';
 
 const Payment = props => {
   const pay = values => {
-    const { contests } = props.contestStore;
+    const { contests } = props.contestCreationStore;
     const contestArray = [];
     Object.keys(contests).forEach(key =>
       contestArray.push({ ...contests[key] })
@@ -37,7 +37,7 @@ const Payment = props => {
     props.history.goBack();
   };
 
-  const { contests } = props.contestStore;
+  const { contests } = props.contestCreationStore;
   const { error } = props.payment;
   const { clearPaymentStore } = props;
   if (isEmpty(contests)) {
@@ -82,7 +82,7 @@ const Payment = props => {
 
 const mapStateToProps = state => ({
   payment: state.payment,
-  contestStore: state.contestStore,
+  contestCreationStore: state.contestCreationStore,
 });
 
 const mapDispatchToProps = dispatch => ({
