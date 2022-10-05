@@ -22,8 +22,11 @@ export const getUser = createAsyncThunk(
         replace('/');
       }
       return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
+    } catch (err) {
+      return rejectWithValue({
+        data: err?.response?.data ?? 'Gateway Timeout',
+        status: err?.response?.status ?? 504,
+      });
     }
   }
 );
@@ -35,8 +38,11 @@ export const updateUser = createAsyncThunk(
       const { data } = await restController.updateUser(payload);
       dispatch(changeEditModeOnUserProfile(false));
       return data;
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
+    } catch (err) {
+      return rejectWithValue({
+        data: err?.response?.data ?? 'Gateway Timeout',
+        status: err?.response?.status ?? 504,
+      });
     }
   }
 );

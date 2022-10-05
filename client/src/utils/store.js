@@ -27,8 +27,11 @@ export const decorateAsyncThunk = ({ key, thunk }) => {
     const { rejectWithValue } = thunkAPI;
     try {
       return await thunk(payload, thunkAPI);
-    } catch ({ response: { data, status } }) {
-      return rejectWithValue({ data, status });
+    } catch (err) {
+      return rejectWithValue({
+        data: err?.response?.data ?? 'Gateway Timeout',
+        status: err?.response?.status ?? 504,
+      });
     }
   });
   return asyncThunk;
