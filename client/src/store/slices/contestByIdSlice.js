@@ -5,7 +5,6 @@ import {
   decorateAsyncThunk,
   rejectedReducer,
   createExtraReducers,
-  fulfilledReducer,
 } from '../../utils/store';
 
 const CONTEST_BY_ID_SLICE_NAME = 'getContestById';
