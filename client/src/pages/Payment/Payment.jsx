@@ -1,17 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import { pay, clearPaymentStore } from './../../store/slices/paymentSlice';
+import { pay, clearPaymentStore } from '../../store/slices/paymentSlice';
 import PayForm from '../../components/PayForm/PayForm';
 import styles from './Payment.module.sass';
 import CONSTANTS from '../../constants';
 import Error from '../../components/Error/Error';
 
-const Payment = props => {
-  const pay = values => {
+const Payment = (props) => {
+  const pay = (values) => {
     const { contests } = props.contestCreationStore;
     const contestArray = [];
-    Object.keys(contests).forEach(key =>
+    Object.keys(contests).forEach((key) =>
       contestArray.push({ ...contests[key] })
     );
     const { number, expiry, cvc } = values;
@@ -48,7 +48,7 @@ const Payment = props => {
       <div className={styles.header}>
         <img
           src={`${CONSTANTS.STATIC_IMAGES_PATH}blue-logo.png`}
-          alt='blue-logo'
+          alt="blue-logo"
         />
       </div>
       <div className={styles.mainContainer}>
@@ -73,19 +73,19 @@ const Payment = props => {
             <span>Total:</span>
             <span>$100.00 USD</span>
           </div>
-          <a href='http://www.google.com'>Have a promo code?</a>
+          <a href="http://www.google.com">Have a promo code?</a>
         </div>
       </div>
     </div>
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   payment: state.payment,
   contestCreationStore: state.contestCreationStore,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   pay: ({ data, history }) => dispatch(pay({ data, history })),
   clearPaymentStore: () => dispatch(clearPaymentStore()),
 });

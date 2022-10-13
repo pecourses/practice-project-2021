@@ -1,18 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { getUser } from './../../store/slices/userSlice';
+import { getUser } from '../../store/slices/userSlice';
 import Spinner from '../Spinner/Spinner';
 
 const PrivateHoc = (Component, props) => {
   class Hoc extends React.Component {
-    componentDidMount () {
+    componentDidMount() {
       if (!this.props.data) {
         this.props.getUser();
       }
     }
 
-    render () {
+    render() {
       return (
         <>
           {this.props.isFetching ? (
@@ -29,9 +29,9 @@ const PrivateHoc = (Component, props) => {
     }
   }
 
-  const mapStateToProps = state => state.userStore;
+  const mapStateToProps = (state) => state.userStore;
 
-  const mapDispatchToProps = dispatch => ({
+  const mapDispatchToProps = (dispatch) => ({
     getUser: () => dispatch(getUser()),
   });
 
